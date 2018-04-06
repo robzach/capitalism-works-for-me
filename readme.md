@@ -5,8 +5,10 @@ My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://vi
 status | description | materials | comments
 --- | --- | --- | ---
 not yet worked on | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
-in process | connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
-in process | communication trouble | new female–female ethernet connector? | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
+in process | electrical connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
+in process | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
+not yet worked on | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
+not yet worked on | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
 
 # repair log and notes
 
@@ -28,7 +30,7 @@ Subsequently, I realized I could just buy my own new connector to carry all 8 wi
 
 ## 4/6/18 1 p.m.–: communication debugging, documentation
 
-I suspect communication trouble over the current CAT5 wire that's set up.
+I suspect communication trouble over the current ethernet cable that's set up.
 
 When running `f7f19e3` (initial commit) of `capPodiumV3_rz_debug_edit.ino` (on the podium) and `capSignV16_rz_debug_edit.ino` (on the TRUE side of the sign), I was trying to debug the wired communication over the RS485 lines. 
 
@@ -84,8 +86,21 @@ podium     short wire      female-female jack    long coiled wire      female–
 
 Result of that test: confusing conclusion.
 
-* One connector, which I've since labeled "iffy!", produces lots of <pre>data received from podium: 0</pre> lines when wiggled.
+* One connector, which I've since labeled "iffy!", produces lots of `data received from podium: 0` lines when wiggled.
 * The other connector, which I've labeled "good?", produces no output at all when wiggled. That seems much better to me.
+* But *neither of them* shows podium data getting to the sign. (I.e. pushing "true" or "false" on the podium, which you can tell is working somewhat because the 15 second counter resets, does not produce any serial feedback on the sign side.)
 
-Obviously, these wires shouldn't expect to be actively jostled while the piece is installed. But the fact that the data isn't getting through, and that one of the connectors looks wonky, makes me think it could be part of the problem.
+Obviously, these wires shouldn't expect to be actively jostled while the piece is installed. But the fact that the data isn't getting through, and that one of the connectors looks wonky, makes me think it could be part of the problem. I'm going to order a new connector to be safe. Picked up a [3-pack for $8](https://www.amazon.com/gp/product/B06ZYN4RX6) on Amazon, delivery is due Monday.
 
+### software oddities
+
+I needed to make some small changes to the software as I'd received it so that it would successfully compile in Arduino 1.8.5, which is the version I'm running on my computer. I'm noting them here for posterity:
+
+original | changed to
+--- | ---
+`Wire.send()` | `Wire.write()`
+`Wire.receive()` | `Wire.read()`
+`sevenSegDisplayString(count, true)` | `sevenSegDisplayString((String)count, true)`
+`sevenSegDisplayString(count, false)` | `sevenSegDisplayString((String)count, false)`
+
+The `Wire.send()` and `Wire.receive()` commands apparently changed nomenclature, which the compiler told me about. The other problem, which I solved by casting the `int` `count` to a `String`, I didn't get a clear warning about.
