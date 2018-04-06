@@ -9,6 +9,7 @@ in process | electrical connector trouble | ordered a new 12-circuit waterproof 
 in process | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
 not yet worked on | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
 not yet worked on | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
+not yet worked on | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
 
 # repair log and notes
 
@@ -28,7 +29,7 @@ I wanted to buy some connectors so that I could wire the second half of the lowe
 
 Subsequently, I realized I could just buy my own new connector to carry all 8 wires at once, instead of replacing these old connectors or making my own extension cable for temporary use. I placed an order for [this model](https://www.amazon.com/gp/product/B01CRV0RUM) 12-conductor waterproof connector on Amazon, which is scheduled for delivery Sunday or Monday. I'll install a longer wire (like 10' or so) so that I can light both halves of the sign while it's in the garage space.
 
-## 4/6/18 1 p.m.–: communication debugging, documentation
+## 4/6/18 1:15–5 p.m.: communication debugging, documentation, a bit more ordering
 
 I suspect communication trouble over the current ethernet cable that's set up.
 
@@ -94,9 +95,11 @@ Obviously, these wires shouldn't expect to be actively jostled while the piece i
 
 ### software oddities
 
-I needed to make some small changes to the software as I'd received it so that it would successfully compile in Arduino 1.8.5, which is the version I'm running on my computer. I'm noting them here for posterity:
+#### compilation failure
 
-original | changed to
+I needed to make some small changes to the software as I'd received it so that it would successfully compile in Arduino 1.8.5, which is the version I'm running on my computer. I'm noting them here explicitly for posterity:
+
+original (capSignV16) | changed to (capSignV16_compile_Arduino185)
 --- | ---
 `Wire.send()` | `Wire.write()`
 `Wire.receive()` | `Wire.read()`
@@ -104,3 +107,19 @@ original | changed to
 `sevenSegDisplayString(count, false)` | `sevenSegDisplayString((String)count, false)`
 
 The `Wire.send()` and `Wire.receive()` commands apparently changed nomenclature, which the compiler told me about. The other problem, which I solved by casting the `int` `count` to a `String`, I didn't get a clear warning about.
+
+#### some sort of fencepost issue?
+
+Uploading `capSignV16_compile_Arduino185` (commit `f7f19e`) onto the sign module, I saw an old familiar number show up in the serial feedback:
+
+<pre>
+Total vote count true eeprom : 4294967295
+Total vote count false eeprom: 4294967295
+Last vote count true eeprom: 4294967295
+Last vote count false eeprom: 4294967295
+Write long eeprom
+Write long eeprom
+Current TRUE : -1
+</pre>
+
+Those eeprom values are the maximum `unsigned long` the Arduino can hold. For some reason, the TRUE count is going to –1, and those eeprom values are going to their maximum. I haven't tried solving this yet.
