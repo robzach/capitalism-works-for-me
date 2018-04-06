@@ -29,7 +29,7 @@ I wanted to buy some connectors so that I could wire the second half of the lowe
 
 Subsequently, I realized I could just buy my own new connector to carry all 8 wires at once, instead of replacing these old connectors or making my own extension cable for temporary use. I placed an order for [this model](https://www.amazon.com/gp/product/B01CRV0RUM) 12-conductor waterproof connector on Amazon, which is scheduled for delivery Sunday or Monday. I'll install a longer wire (like 10' or so) so that I can light both halves of the sign while it's in the garage space.
 
-## 4/6/18 1:15–5 p.m.: communication debugging, documentation, a bit more ordering
+## 4/6/18 1:15–5:15 p.m.: communication debugging, documentation, a bit more ordering
 
 I suspect communication trouble over the current ethernet cable that's set up.
 
