@@ -3,6 +3,7 @@ My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://vi
 # master list of issues:
 
 status | description | materials | comments
+--- | --- | --- | ---
 not yet worked on | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
 in process | connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
 in process | communication trouble | new female–female ethernet connector? | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
