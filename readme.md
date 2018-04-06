@@ -110,7 +110,7 @@ The `Wire.send()` and `Wire.receive()` commands apparently changed nomenclature,
 
 #### some sort of fencepost issue?
 
-Uploading `capSignV16_compile_Arduino185` (commit `f7f19e`) onto the sign module, I saw an old familiar number show up in the serial feedback:
+Uploading `capSignV16_compile_Arduino185` (commit `94f944`) onto the sign module, I saw an old familiar number show up in the serial feedback:
 
 <pre>
 Total vote count true eeprom : 4294967295
