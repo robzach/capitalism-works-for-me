@@ -99,7 +99,7 @@ Obviously, these wires shouldn't expect to be actively jostled while the piece i
 
 I needed to make some small changes to the software as I'd received it so that it would successfully compile in Arduino 1.8.5, which is the version I'm running on my computer. I'm noting them here explicitly for posterity:
 
-original (capSignV16) | changed to (capSignV16_compile_Arduino185)
+original (capSignV16.ino) | changed to (capSignV16_compile_Arduino185.ino)
 --- | ---
 `Wire.send()` | `Wire.write()`
 `Wire.receive()` | `Wire.read()`
@@ -122,4 +122,37 @@ Write long eeprom
 Current TRUE : -1
 </pre>
 
-Those eeprom values are the maximum `unsigned long` the Arduino can hold. For some reason, the TRUE count is going to –1, and those eeprom values are going to their maximum. I haven't tried solving this yet.
+Those eeprom values are the maximum `unsigned long` the Arduino can hold. For some reason, the TRUE count is going to –1, and those eeprom values are going to their maximum. I haven't tried solving this yet, but it is a low-priority problem in any case.
+
+## 4/12/18 2–
+
+### ethernet connector testing
+
+I substituted in a newly arrived ethernet connector for the podium-to-sign signal test. It didn't fix the problem. Wiggling this new connector didn't cause spontaneous random signals to be transmitted, as wiggling the old one had, but unplugging and replugging the cables does transmit `0` signals. In any case, the votes are not being transmitted from the podium to the sign.
+
+I wrote and uploaded diagnostic sketches, which appear in commit `9cc4e11`, and it appears that communication over Serial2 is not making it from the podium to the sign. (The podium says it's sending the data; the sign doesn't receive it; making and breaking the CAT5 connection makes it look like it is at least listening to those pins properly since garbage appears in the serial monitor when there are electrical signals.)
+
+Started doing some electrical investigation. I found that on the podium RS485 module, the Arduino ground was plugged into the module's TX, and the Arduino's serial signal wire was floating in the air, connected to nothing…but close to the board and bent as if it had been plugged in. I don't remember unplugging any wire and replugging it (partly because I would've had to have looked up the wire mapping, and am pretty sure I didn't do that), but at least this is an electrical problem I can try to fix.
+
+Somehow fixing it didn't matter! And there's something odd going on electrically on the Mega: its own 3.3V pin has a consistent 4.69V with respect to its own ground. I don't know that that's a definite problem, but it's unusual and points to potential trouble.
+
+After uploading the diagnostic sketches, I noticed the RTS line on the transmitting side (the podium) wasn't being used in my own sketch. This line needs to be held high on the transmitting side of the CAT5 link, so I added lines to pull it high at all times (commit `55f9df1`). Didn't help, but now when the connection is made and broken repeatedly, instead of garbage data, the sign Arduino just shows `0`s on the Serial2 read. Interesting.
+
+Then I pulled the RTS line low on the receiving side (commit `45ab34c`), and it continued to not work.
+
+As a test, I wired the TX2 pin of the podium Arduino directly to the RX2 pin of the sign Arduino, and tied their grounds together as well; this successfully transmitted `1`s and `2`s as it should've. It's obvious that the problem is not the fundamental serial stuff in software, but rather the transmission via RJ45. Further work here is needed.
+
+### trouble compiling the podium-side code
+
+The podium Arduino relies on a family of libraries called RF22, which have since been superseded by the RadioHead library by the same author. I wasn't able to compile the podium code (capPodiumV3_rz_debug_edit.ino) as it was missing all those library files locally. They're still available online and so I added each necessary header directly to the sketch folder (this attempt appears in the manualAddHeaders branch, commit `2cc55796`), but after resolving missing files, still had some bad-looking low-level library problems. To wit:
+
+<pre>
+ccvts0YB.ltrans0.o:(.text.startup+0xfa): undefined reference to `RF22ReliableDatagram::RF22ReliableDatagram(unsigned char, unsigned char, unsigned char)'
+/var/folders/86/fxc5555514l737wd7rb8dt6w0000gn/T//ccvts0YB.ltrans0.ltrans.o: In function `main':
+ccvts0YB.ltrans0.o:(.text.startup+0x208): undefined reference to `RF22Datagram::init()'
+collect2: error: ld returned 1 exit status
+</pre>
+
+Seeing that these problems were not the sort I wanted to work on, I tried instead to use the RadioHead library, which the author says is backwards compatible with RF22. Apparently, for me, that's not the case.
+
+Because it appears that the RF22 code all supported using radio transmissions of data which are no longer used in the project, I'm planning to cut all of it out and avoid the problem altogether. This appears in commit `29d1446`, and it compiles without complaint.
