@@ -290,7 +290,8 @@ void updateCounts()
   {
     displayTrueCount(voteCountTrue);
     eepromWriteUnsignedLong(disk1, voteCountTrueLastAddress, voteCountTrue); //update last count
-    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1); //increment total vote count in eeprom
+    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1); 
+    //increment total vote count in eeprom
     lastVoteCountTrue = voteCountTrue;
     ringBell();
     Serial.print("Current TRUE : ");
@@ -303,7 +304,8 @@ void updateCounts()
   {
     displayFalseCount(voteCountFalse);
     eepromWriteUnsignedLong(disk1, voteCountFalseLastAddress, voteCountFalse);
-    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1); //increment total vote count in eeprom
+    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1); 
+    //increment total vote count in eeprom
     lastVoteCountFalse = voteCountFalse;
     ringBell();
     Serial.print("Current FALSE : ");
@@ -890,7 +892,8 @@ unsigned long eepromReadUnsignedLong(int theDeviceAddress, unsigned int theMemor
 {
   byte theByteArray[sizeof(unsigned long)];
   eepromRead(theDeviceAddress, theMemoryAddress, sizeof(unsigned long), theByteArray);
-  return (unsigned long)(((theByteArray[0] << 32)) | (unsigned long)((theByteArray[1] << 16)) | (unsigned long)((theByteArray[2] << 8)) | (unsigned long)((theByteArray[3] << 0)));
+  return (unsigned long)(((theByteArray[0] << 32)) | (unsigned long)((theByteArray[1] << 16)) | 
+    (unsigned long)((theByteArray[2] << 8)) | (unsigned long)((theByteArray[3] << 0)));
 }
 
 
