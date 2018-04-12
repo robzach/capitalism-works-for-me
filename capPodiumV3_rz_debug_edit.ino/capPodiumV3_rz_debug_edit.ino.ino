@@ -1,18 +1,6 @@
 const int RZDEBUG = true;
 
-#include <RF22ReliableDatagram.h>
-#include <RF22.h>
 #include <SPI.h>
-
-#define CLIENT_ADDRESS 1
-#define SERVER_ADDRESS 2
-
-// Singleton instance of the radio
-RF22ReliableDatagram rf22(CLIENT_ADDRESS);
-
-uint8_t data[] = "Hello World!";
-// Dont put this on the stack:
-uint8_t buf[RF22_MAX_MESSAGE_LEN];
 
 //rs485
 const int rs485RsPin = 5;
@@ -47,9 +35,6 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
   Serial2.begin(9600);
-  if (!rf22.init())
-    Serial.println("RF22 init failed");
-  // Defaults after init are 434.0MHz, modulation GFSK_Rb2_4Fd36
   Serial1.write(0x76); //clear display
 
 
@@ -177,35 +162,6 @@ void ledSendInt(int number, boolean colon)
   ledBuffer[2] = ((number%100) - (number%10))/10;
   ledBuffer[3] = number%10;
   Serial1.write(ledBuffer,4);
-  return;
-}
-
-void radioComm()
-{
-  Serial.println("Sending to rf22_datagram_server");
-
-  // Send a message to rf22_server
-  if (!rf22.sendtoWait(data, sizeof(data), SERVER_ADDRESS))
-    Serial.println("sendtoWait failed");
-  else
-  {
-    // Now wait for a reply from the server
-    //     Serial.println(rf22.lastRssi(), HEX); // of the ACK
-    uint8_t len = sizeof(buf);
-    uint8_t from;   
-    if (rf22.recvfromAckTimeout(buf, &len, 2000, &from))
-    {
-      Serial.print("got reply from : 0x");
-      Serial.print(from, HEX);
-      Serial.print(": ");
-      Serial.println((char*)buf);
-    }
-    else
-    {
-      Serial.println("No reply, is rf22_datagram_server running?");
-    }
-  }
-  delay(500);
   return;
 }
 
