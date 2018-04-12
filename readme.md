@@ -124,7 +124,7 @@ Current TRUE : -1
 
 Those eeprom values are the maximum `unsigned long` the Arduino can hold. For some reason, the TRUE count is going to –1, and those eeprom values are going to their maximum. I haven't tried solving this yet, but it is a low-priority problem in any case.
 
-## 4/12/18 2–
+## 4/12/18 2–6 p.m.: communication troubles persist; slimming the podium-side code slightly
 
 ### ethernet connector testing
 
@@ -156,3 +156,7 @@ collect2: error: ld returned 1 exit status
 Seeing that these problems were not the sort I wanted to work on, I tried instead to use the RadioHead library, which the author says is backwards compatible with RF22. Apparently, for me, that's not the case.
 
 Because it appears that the RF22 code all supported using radio transmissions of data which are no longer used in the project, I'm planning to cut all of it out and avoid the problem altogether. This appears in commit `29d1446`, and it compiles without complaint.
+
+### wires to be worked on next
+
+I have the waterproof connectors as well as a crimping tool to connect them, but need to buy longer wires to complete the job and allow the left side of the sign to connect at a distance to the right side via the new connectors. I will buy the wires tomorrow morning and install them.
