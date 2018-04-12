@@ -1,7 +1,7 @@
 const int RZDEBUG = true;
 
-#include <RF22ReliableDatagram.h>
-#include <RF22.h>
+#include "RF22ReliableDatagram.h"
+#include "RF22.h"
 #include <SPI.h>
 
 #define CLIENT_ADDRESS 1
@@ -39,9 +39,9 @@ const int dp1Pin = 37;
 boolean delayFlag = true;
 
 //delay
-int ledState = LOW;            
-unsigned long previousMillis = 0;       
-unsigned long interval = 500; 
+int ledState = LOW;
+unsigned long previousMillis = 0;
+unsigned long interval = 500;
 
 void setup() {
   Serial.begin(9600);
@@ -87,18 +87,18 @@ void setup() {
 
 }
 
-void loop(){
+void loop() {
   int delayTime = 0;
-  if(!digitalRead(dp8Pin) && !digitalRead(dp7Pin))
+  if (!digitalRead(dp8Pin) && !digitalRead(dp7Pin))
   {
     delayTime = 60;
   }
-  else if(!digitalRead(dp8Pin))
+  else if (!digitalRead(dp8Pin))
   {
     delayTime = 15;
   }
 
-  else if(!digitalRead(dp7Pin))
+  else if (!digitalRead(dp7Pin))
   {
     delayTime = 30;
   }
@@ -108,13 +108,13 @@ void loop(){
     delayTime = 0;
   }
 
-  if(delayFlag)
+  if (delayFlag)
   {
     //turn off button led
     digitalWrite(trueButtonLedPin, LOW);
     digitalWrite(falseButtonLedPin, LOW);
 
-    for(int i = delayTime; i >= 0 ; i--)
+    for (int i = delayTime; i >= 0 ; i--)
     {
       ledSendInt(i, true);
       Serial.println(i);
@@ -123,7 +123,7 @@ void loop(){
     delayFlag = false;
   }
 
-  if(!digitalRead(trueButtonPin))
+  if (!digitalRead(trueButtonPin))
   {
     Serial2.write(1); //send rs-485
     Serial.println("True button press");
@@ -140,9 +140,9 @@ void loop(){
 
   //blink led
   unsigned long currentMillis = millis();
-  if(currentMillis - previousMillis > interval) {
-    previousMillis = currentMillis;   
-    if(ledState == LOW)
+  if (currentMillis - previousMillis > interval) {
+    previousMillis = currentMillis;
+    if (ledState == LOW)
     {
       ledState = HIGH;
     }
@@ -160,7 +160,7 @@ void ledSendInt(int number, boolean colon)
 {
   byte ledBuffer[4];
   //Serial1.write(0x76); //clear
-  if(colon)
+  if (colon)
   {
     //colon
     Serial1.write(0x77);
@@ -172,11 +172,11 @@ void ledSendInt(int number, boolean colon)
     Serial1.write(0x77);
     Serial1.write(byte(0x00));
   }
-  ledBuffer[0] = ((number%10000) - (number%1000))/1000;
-  ledBuffer[1] = ((number%1000) - (number%100))/100;
-  ledBuffer[2] = ((number%100) - (number%10))/10;
-  ledBuffer[3] = number%10;
-  Serial1.write(ledBuffer,4);
+  ledBuffer[0] = ((number % 10000) - (number % 1000)) / 1000;
+  ledBuffer[1] = ((number % 1000) - (number % 100)) / 100;
+  ledBuffer[2] = ((number % 100) - (number % 10)) / 10;
+  ledBuffer[3] = number % 10;
+  Serial1.write(ledBuffer, 4);
   return;
 }
 
@@ -192,7 +192,7 @@ void radioComm()
     // Now wait for a reply from the server
     //     Serial.println(rf22.lastRssi(), HEX); // of the ACK
     uint8_t len = sizeof(buf);
-    uint8_t from;   
+    uint8_t from;
     if (rf22.recvfromAckTimeout(buf, &len, 2000, &from))
     {
       Serial.print("got reply from : 0x");
