@@ -1,13 +1,15 @@
 /*
- * simplest test to see if the podium is sending data over
- * Serial2 to the sign
- * 
- * 4-12-18 rz@rzach.me
- */
+   simplest test to see if the podium is sending data over
+   Serial2 to the sign
+
+   4-12-18 rz@rzach.me
+*/
 
 
 const int trueButtonPin = 7;
 const int falseButtonPin = 9;
+const int rs485RsPin = 5;
+
 
 void setup() {
   Serial.begin(9600);
@@ -15,6 +17,9 @@ void setup() {
 
   pinMode(trueButtonPin, INPUT_PULLUP);
   pinMode(falseButtonPin, INPUT_PULLUP);
+
+  pinMode(rs485RsPin, OUTPUT);
+  digitalWrite(rs485RsPin, HIGH); //set transmit
 }
 
 void loop() {
