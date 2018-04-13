@@ -180,7 +180,7 @@ number | color
 7b|light purple (common with pin 7)
 8b|grey (common with pin 8)
 
-## 4/13/18 2–5:45 p.m.
+## 4/13/18 2:00–5:45 p.m.
 
 ### digits
 
