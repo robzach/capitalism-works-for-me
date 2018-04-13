@@ -4,9 +4,9 @@ My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://vi
 
 status | description | materials | comments
 --- | --- | --- | ---
-not yet worked on | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
+fixed 4/13/18 | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
 in process | electrical connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
-in process | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
+obviated 4/13/18 | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
 not yet worked on | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
 not yet worked on | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
 not yet worked on | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
@@ -160,3 +160,40 @@ Because it appears that the RF22 code all supported using radio transmissions of
 ### wires to be worked on next
 
 I have the waterproof connectors as well as a crimping tool to connect them, but need to buy longer wires to complete the job and allow the left side of the sign to connect at a distance to the right side via the new connectors. I will buy the wires tomorrow morning and install them.
+
+## 4/13/18 11:30 a.m.–1:30 p.m.
+
+Replacing the electrical connectors between the bottom halves of the sign.
+
+Wire numbering system for my own reference:
+
+number | color
+--- | ---
+1|orange
+2|yellow
+3|blue
+4|brown
+5|black
+6|green
+7|light brown
+8|white
+7b|light purple (common with pin 7)
+8b|grey (common with pin 8)
+
+## 4/13/18 2–5:45 p.m.
+
+### digits
+
+After connecting all wires except for the pair that runs the large LED illumination of "FALSE", the "false" side of the sign is in good working order, with all 7-segment digits working properly. Good!
+
+On the TRUE side, I had to replace one bad LED segment, and in another case resoldered one with an iffy connection. Following that, I get a solid 888 will all segments appearing. Also good!
+
+
+### communication
+
+Instead of using the RS485 protocol, I tested simply running a long pair of wires from the podium to the sign: GND to GND, and the podium's Serial2 transmit pin (pin 16) to the sign's Serial2 receive pin (pin 17). The wire I'm using is shielded and I used the shield conductor as the ground to reduce noise. It appears that data is transmitting reliably based on some testing, and so I'll plan to simply discard the RS485 altogether and use my new *very* simple interconnect for communication between the podium and sign.
+
+
+### power wiring
+
+The only wiring that's incomplete between the TRUE and FALSE sides is the power to run the illumnation LEDs behind the always-lit word FALSE. The wire that was originally used for this connection is 18AWG, but the individual wires in the multiconductor cable that I'm using to connect the two sides is probably more like 20 or 22 AWG (I'm not sure). Because I don't want to have any problem with undercurrent (or overheating), I'm ganging conductors 8 and 8b together, and 7 and 7b; I think two of the smaller wires in parallel will suffice. This last little bit of wiring is about halfway done as I'm finishing work for the day and should only take less than a half hour to complete.
