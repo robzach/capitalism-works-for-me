@@ -1,4 +1,4 @@
-const int RZDEBUG = true; // set this true or false to turn additional serial debugging on or off
+const boolean RZDEBUG = true; // set this true or false to turn additional serial debugging on or off
 
 #include <SPI.h>
 #include <Wire.h>
