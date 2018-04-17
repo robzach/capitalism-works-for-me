@@ -27,9 +27,6 @@ const int sevenSegLatchPinFalse = 28;
 const int sevenSegClockPinFalse = 30;
 const int sevenSegDataPinFalse = 32;
 
-//bell
-const int bellPin = 33;
-
 //global current vote count
 int voteCountTrue = 0;
 int voteCountFalse = 0;
@@ -160,9 +157,6 @@ void setup() {
   pinMode(relayCPin, OUTPUT);
   pinMode(relayDPin, OUTPUT);
 
-  pinMode(bellPin, OUTPUT);
-  digitalWrite(bellPin, HIGH);
-
   pinMode(rs485RsPin, OUTPUT);
   digitalWrite(rs485RsPin, LOW); //set recieve
 
@@ -188,11 +182,6 @@ void loop() {
   {
     voteCountTrue = 0;
     voteCountFalse = 0;
-  }
-
-  if (!digitalRead(buttonBPin))
-  {
-    ringBell();
   }
 
   if (!digitalRead(buttonCPin))
@@ -274,15 +263,7 @@ void displayFalseCount(int count)
   return;
 }
 
-void ringBell()
-{
-  digitalWrite(bellPin, LOW);
-  delay(100);
-  digitalWrite(bellPin, HIGH);
-  return;
-}
-
-//check to see if vote has changed, if so change numbers, set eeprom, ring bell
+//check to see if vote has changed, if so change numbers, set eeprom
 void updateCounts()
 {
 
@@ -293,7 +274,6 @@ void updateCounts()
     eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1); 
     //increment total vote count in eeprom
     lastVoteCountTrue = voteCountTrue;
-    ringBell();
     Serial.print("Current TRUE : ");
     Serial.println(voteCountTrue);
     Serial.print("Total TRUE : ");
@@ -307,7 +287,6 @@ void updateCounts()
     eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1); 
     //increment total vote count in eeprom
     lastVoteCountFalse = voteCountFalse;
-    ringBell();
     Serial.print("Current FALSE : ");
     Serial.println(voteCountFalse);
     Serial.print("Total FALSE : ");
