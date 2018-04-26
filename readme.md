@@ -205,7 +205,8 @@ The only wiring that's incomplete between the TRUE and FALSE sides is the power 
 
 Rewrote EEPROM code on the podium side. This work appears in the `eepromModification` branch.
 
-## 4/26/18 9:30–
+## 4/26/18 9:30 a.m.–12:30 p.m.
 
 Completed the power wiring so that the FALSE side has backlighting (and digits are still working).
 
+Further modified the podium side EEPROM code so that it actually remembers last values after a power cycle; at the moment it increments both TRUE and FALSE counts by one on restart, but this doesn't seem like an important enough bug to care about squashing.
