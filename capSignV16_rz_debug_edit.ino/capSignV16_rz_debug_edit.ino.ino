@@ -15,17 +15,6 @@ struct vote {
 // declaring global structs to hold the vote counts
 struct vote truevote, falsevote;
 
-                  //const int voteCountTrueTotalAddress = 8;
-                  //const int voteCountFalseTotalAddress = 16;
-                  //const int voteCountTrueLastAddress = 24;
-                  //const int voteCountFalseLastAddress = 36;
-                  //
-                  ////eeprom vars
-                  //unsigned long eepromTotalVoteCountTrue;
-                  //unsigned long eepromTotalVoteCountFalse;
-                  //unsigned long eepromLastVoteCountTrue;
-                  //unsigned long eepromLastVoteCountFalse;
-
 //number comm setup
 const int sevenSegLatchPinTrue = 22;
 const int sevenSegClockPinTrue = 24;
@@ -173,19 +162,10 @@ void setup() {
   // load prior eeprom data, if any
   truevote = EEPROM.get(eepromStartAddress, voteprototype);
   falsevote = EEPROM.get(eepromStartAddress + sizeof(vote), voteprototype);
-  
+  voteCountTrue = truevote.total;
+  voteCountFalse = falsevote.total;
+
   eepromPrintLastValues();
-
-                //  //populate last counts from eeprom
-                //  lastVoteCountTrue = eepromReadUnsignedLong(disk1, voteCountTrueLastAddress) - 1;
-                //  lastVoteCountFalse = eepromReadUnsignedLong(disk1, voteCountFalseLastAddress) - 1;
-                //
-                //  voteCountTrue = lastVoteCountTrue + 1 ;
-                //  voteCountFalse = lastVoteCountFalse + 1;
-
-  //displayTrueCount(voteCountTrue);
-  //displayFalseCount(voteCountFalse);
-
 }
 
 void loop() {
@@ -201,8 +181,8 @@ void loop() {
   }
 
   // MIDDLE red tactile button on podium breadboard
-  // reset EEPROM vote counts to 0
-  if (!digitalRead(buttonBPin)){
+  // reset EEPROM vote counts to 0, and current vote counts to 0
+  if (!digitalRead(buttonBPin)) {
     Serial.println("buttonBPin pressed; resetting EEPROM vote counts to 0");
     truevote.total = 0;
     truevote.last = 0;
@@ -210,11 +190,13 @@ void loop() {
     falsevote.last = 0;
     EEPROM.put(eepromStartAddress, truevote);
     EEPROM.put(eepromStartAddress + sizeof(voteprototype), falsevote);
+    voteCountTrue = 0;
+    voteCountFalse = 0;
     eepromPrintLastValues();
   }
 
   // BOTTOM red tactile button on podium breadboard
-  // reset vote counts to 888 (for LED digit testing)
+  // change vote counts to 888 (for LED digit testing)
   if (!digitalRead(buttonCPin))
   {
     Serial.println("buttonCPin pressed; resetting current vote counts to 888");
@@ -302,13 +284,13 @@ void updateCounts()
   if (lastVoteCountTrue != voteCountTrue)
   {
     displayTrueCount(voteCountTrue);
-          //    eepromWriteUnsignedLong(disk1, voteCountTrueLastAddress, voteCountTrue); //update last count
+    //    eepromWriteUnsignedLong(disk1, voteCountTrueLastAddress, voteCountTrue); //update last count
     truevote.last = voteCountTrue;
-          //    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1);
+    //    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1);
     truevote.total++;
     EEPROM.put(eepromStartAddress, truevote);
     //increment total vote count in eeprom
-    
+
     lastVoteCountTrue = voteCountTrue;
     Serial.print("Current TRUE : ");
     Serial.println(voteCountTrue);
@@ -319,9 +301,9 @@ void updateCounts()
   if (lastVoteCountFalse != voteCountFalse)
   {
     displayFalseCount(voteCountFalse);
-          //    eepromWriteUnsignedLong(disk1, voteCountFalseLastAddress, voteCountFalse);
+    //    eepromWriteUnsignedLong(disk1, voteCountFalseLastAddress, voteCountFalse);
     falsevote.last = voteCountFalse;
-          //    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1);
+    //    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1);
     falsevote.total++;
     EEPROM.put(eepromStartAddress + sizeof(voteprototype), falsevote);
     //increment total vote count in eeprom
@@ -337,16 +319,9 @@ void updateCounts()
 //read the last values from the eeprom and update them
 void eepromPopulateLastValues()
 {
-
-    // load prior eeprom data, if any
+  // load prior eeprom data, if any
   truevote = EEPROM.get(eepromStartAddress, voteprototype);
   falsevote = EEPROM.get(eepromStartAddress + sizeof(vote), voteprototype);
-  
-//        eepromTotalVoteCountTrue = eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress);
-//        eepromTotalVoteCountFalse = eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress);
-//        eepromLastVoteCountTrue = eepromReadUnsignedLong(disk1, voteCountTrueLastAddress);
-//        eepromLastVoteCountFalse = eepromReadUnsignedLong(disk1, voteCountFalseLastAddress);
-  
   return;
 }
 
@@ -360,15 +335,6 @@ void eepromPrintLastValues()
   Serial.println(truevote.last);
   Serial.print("last false votes from eeprom: ");
   Serial.println(falsevote.last);
-            //    
-            //  Serial.print("Total vote count true eeprom : ");
-            //  Serial.println(eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress));
-            //  Serial.print("Total vote count false eeprom: ");
-            //  Serial.println(eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress));
-            //  Serial.print("Last vote count true eeprom: ");
-            //  Serial.println(eepromReadUnsignedLong(disk1, voteCountTrueLastAddress));
-            //  Serial.print("Last vote count false eeprom: ");
-            //  Serial.println(eepromReadUnsignedLong(disk1, voteCountFalseLastAddress));
   return;
 }
 
@@ -396,63 +362,3 @@ void sevenSegDisplayString(String displayString, boolean group)
   }
   return;
 }
-
-
-
-/*
-
-void eepromWrite(int theDeviceAddress, unsigned int theMemoryAddress, int theByteCount, byte* theByteArray)
-{
-  for (int theByteIndex = 0; theByteIndex < theByteCount; theByteIndex++)
-  {
-    Wire.beginTransmission(theDeviceAddress);
-    Wire.write((byte)((theMemoryAddress + theByteIndex) >> 8));
-    Wire.write((byte)((theMemoryAddress + theByteIndex) >> 0));
-    Wire.write(theByteArray[theByteIndex]);
-    Wire.endTransmission();
-    delay(4);
-  }
-  return;
-}
-
-
-void eepromRead(int theDeviceAddress, unsigned int theMemoryAddress, int theByteCount, byte* theByteArray)
-{
-  for (int theByteIndex = 0; theByteIndex < theByteCount; theByteIndex++)
-  {
-    Wire.beginTransmission(theDeviceAddress);
-    Wire.write((byte)((theMemoryAddress + theByteIndex) >> 8));
-    Wire.write((byte)((theMemoryAddress + theByteIndex) >> 0));
-    Wire.endTransmission();
-    delay(3);
-    Wire.requestFrom(theDeviceAddress, sizeof(byte));
-    theByteArray[theByteIndex] = Wire.read();
-  }
-  return;
-}
-
-
-
-            void eepromWriteUnsignedLong(int theDeviceAddress, unsigned int theMemoryAddress, unsigned long theLong)
-            {
-              byte theByteArray[sizeof(unsigned long)] = {
-                (byte)(theLong >> 32), (byte)(theLong >> 16), (byte)(theLong >> 8), (byte)(theLong >> 0)
-              };
-              eepromWrite(theDeviceAddress, theMemoryAddress, sizeof(unsigned long), theByteArray);
-              eepromAddress = eepromAddress + 2;
-              Serial.println("Write long eeprom");
-              return;
-            }
-            
-            unsigned long eepromReadUnsignedLong(int theDeviceAddress, unsigned int theMemoryAddress)
-            {
-              byte theByteArray[sizeof(unsigned long)];
-              eepromRead(theDeviceAddress, theMemoryAddress, sizeof(unsigned long), theByteArray);
-              return (unsigned long)(((theByteArray[0] << 32)) | (unsigned long)((theByteArray[1] << 16)) |
-                                     (unsigned long)((theByteArray[2] << 8)) | (unsigned long)((theByteArray[3] << 0)));
-            }
-*/
-
-
-
-
