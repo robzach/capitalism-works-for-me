@@ -5,12 +5,12 @@ My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://vi
 status | description | materials | comments
 --- | --- | --- | ---
 fixed 4/13/18 | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
-complete 4/26/18 | electrical connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
+complete 4/26/18 | electronic connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
 obviated 4/13/18 | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
-not yet worked on 4/13/18 | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
+as of 4/26/18 the connectors are on hand but sufficiently large capacity wire nuts are needed | power to "CAPITALISM" marquee is dangerous | new 6-conductor connectors | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating. As of 4/26 I have the connectors and will acquire wire nuts to attach the sign-side plug.
 deemed unnecessary to work on 4/13/18 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
-not yet worked on 4/13/18 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
-gathering tools 4/26/18 | chassis grounding | grounding pigtails | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly.
+fixed 4/26/18 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
+partly complete 4/26/18 | chassis grounding | grounding pigtails, bus connection posts | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly. (needed: bus connection bars; self-tapping screws to mount same)
 gathering parts 4/26/18 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
 
 
@@ -210,3 +210,14 @@ Rewrote EEPROM code on the podium side. This work appears in the `eepromModifica
 Completed the power wiring so that the FALSE side has backlighting (and digits are still working).
 
 Further modified the podium side EEPROM code so that it actually remembers last values after a power cycle; at the moment it increments both TRUE and FALSE counts by one on restart, but this doesn't seem like an important enough bug to care about squashing.
+
+## 4/26/18 2:45–4:15 p.m.
+
+Completed chassis ground point installation: the TRUE and FALSE sides have grounding pigtails which are tied to each other through the data connection cable ground wire. Based on current progress, compiled a shopping list of items to pick up at Home Depot or bring from home:
+
+* ground bus bar (2)
+* wire nut to join for 1 12AWG and 1 18 AWG wire (12)
+* grounding pigtail (3)
+* male plug with ground wire (1)
+* stranded black or green wire, low voltage, ~20AWG (20 ft.)
+* self-tapping sheet metal screws
