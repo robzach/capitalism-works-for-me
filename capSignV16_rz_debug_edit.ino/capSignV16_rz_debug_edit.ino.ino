@@ -879,6 +879,8 @@ void sevenSegSendRaw(int code, boolean group)
   return;
 }
 
+/*
+
 void eepromWrite(int theDeviceAddress, unsigned int theMemoryAddress, int theByteCount, byte* theByteArray)
 {
   for (int theByteIndex = 0; theByteIndex < theByteCount; theByteIndex++)
@@ -910,7 +912,7 @@ void eepromRead(int theDeviceAddress, unsigned int theMemoryAddress, int theByte
 }
 
 
-/*
+
             void eepromWriteUnsignedLong(int theDeviceAddress, unsigned int theMemoryAddress, unsigned long theLong)
             {
               byte theByteArray[sizeof(unsigned long)] = {
