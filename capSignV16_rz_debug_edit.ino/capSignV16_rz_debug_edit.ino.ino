@@ -288,6 +288,7 @@ void updateCounts()
     truevote.last = voteCountTrue;
           //    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1);
     truevote.total++;
+    EEPROM.put(eepromStartAddress, truevote);
     //increment total vote count in eeprom
     
     lastVoteCountTrue = voteCountTrue;
@@ -304,6 +305,7 @@ void updateCounts()
     falsevote.last = voteCountFalse;
           //    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1);
     falsevote.total++;
+    EEPROM.put(eepromStartAddress + sizeof(voteprototype), falsevote);
     //increment total vote count in eeprom
     lastVoteCountFalse = voteCountFalse;
     Serial.print("Current FALSE : ");
