@@ -10,6 +10,9 @@ obviated 4/13/18 | communication trouble | new female–female ethernet connecto
 not yet worked on 4/13/18 | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
 deemed unnecessary to work on 4/13/18 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
 not yet worked on 4/13/18 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
+gathering tools 4/26/18 | chassis grounding | grounding pigtails | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly.
+gathering parts 4/26/18 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
+
 
 # repair log and notes
 
@@ -197,3 +200,10 @@ Instead of using the RS485 protocol, I tested simply running a long pair of wire
 ### power wiring
 
 The only wiring that's incomplete between the TRUE and FALSE sides is the power to run the illumnation LEDs behind the always-lit word FALSE. The wire that was originally used for this connection is 18AWG, but the individual wires in the multiconductor cable that I'm using to connect the two sides is probably more like 20 or 22 AWG (I'm not sure). Because I don't want to have any problem with undercurrent (or overheating), I'm ganging conductors 8 and 8b together, and 7 and 7b; I think two of the smaller wires in parallel will suffice. This last little bit of wiring is about halfway done as I'm finishing work for the day and should only take less than a half hour to complete.
+
+## 4/25/18 8–9:30 p.m.
+
+Rewrote EEPROM code on the podium side. This work appears in the `eepromModification` branch.
+
+## 4/26/18 9:30–
+
