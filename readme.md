@@ -5,7 +5,7 @@ My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://vi
 status | description | materials | comments
 --- | --- | --- | ---
 fixed 4/13/18 | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
-in process, mostly complete 4/13/18 | electrical connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
+complete 4/26/18 | electrical connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
 obviated 4/13/18 | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
 not yet worked on 4/13/18 | power to "CAPITALISM" marquee is dangerous | new connectors? (not yet ordered) | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating.
 deemed unnecessary to work on 4/13/18 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
@@ -206,4 +206,6 @@ The only wiring that's incomplete between the TRUE and FALSE sides is the power 
 Rewrote EEPROM code on the podium side. This work appears in the `eepromModification` branch.
 
 ## 4/26/18 9:30–
+
+Completed the power wiring so that the FALSE side has backlighting (and digits are still working).
 
