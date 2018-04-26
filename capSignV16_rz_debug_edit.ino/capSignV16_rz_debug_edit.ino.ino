@@ -12,6 +12,9 @@ struct vote {
   int total, last;
 } voteprototype;
 
+// declaring global structs to hold the vote counts
+struct vote truevote, falsevote;
+
                   //const int voteCountTrueTotalAddress = 8;
                   //const int voteCountFalseTotalAddress = 16;
                   //const int voteCountTrueLastAddress = 24;
@@ -22,8 +25,6 @@ struct vote {
                   //unsigned long eepromTotalVoteCountFalse;
                   //unsigned long eepromLastVoteCountTrue;
                   //unsigned long eepromLastVoteCountFalse;
-
-struct vote truevote, falsevote;
 
 //number comm setup
 const int sevenSegLatchPinTrue = 22;
@@ -167,7 +168,7 @@ void setup() {
   digitalWrite(rs485RsPin, LOW); //set recieve
 
   Serial.println("Sign program, by Alexander Reben 2011 alex@areben.com");
-  Serial.println("modified by Robert Zacharias, 2018, rz@rzach.me; see <https://github.com/robzach/capitalism-works-for-me>");
+  Serial.println("modified by Robert Zacharias (rz@rzach.me) in 2018; see <https://github.com/robzach/capitalism-works-for-me>");
 
   // load prior eeprom data, if any
   truevote = EEPROM.get(eepromStartAddress, voteprototype);
@@ -190,16 +191,33 @@ void setup() {
 void loop() {
   currentMillis = millis();
 
-  // reset vote counts to 0
+  // TOP red tactile button on podium breadboard
+  // reset live vote counts to 0
   if (!digitalRead(buttonAPin))
   {
+    Serial.println("buttonAPin pressed; resetting current vote counts to 0");
     voteCountTrue = 0;
     voteCountFalse = 0;
   }
 
+  // MIDDLE red tactile button on podium breadboard
+  // reset EEPROM vote counts to 0
+  if (!digitalRead(buttonBPin)){
+    Serial.println("buttonBPin pressed; resetting EEPROM vote counts to 0");
+    truevote.total = 0;
+    truevote.last = 0;
+    falsevote.total = 0;
+    falsevote.last = 0;
+    EEPROM.put(eepromStartAddress, truevote);
+    EEPROM.put(eepromStartAddress + sizeof(voteprototype), falsevote);
+    eepromPrintLastValues();
+  }
+
+  // BOTTOM red tactile button on podium breadboard
   // reset vote counts to 888 (for LED digit testing)
   if (!digitalRead(buttonCPin))
   {
+    Serial.println("buttonCPin pressed; resetting current vote counts to 888");
     voteCountTrue = 888;
     voteCountFalse = 888;
   }
