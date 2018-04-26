@@ -123,8 +123,6 @@ byte patternA[352] = {
   B1110, B0111, B1011, B1101, B1110, B0111, B1011, B1101,
   B1110, B0111, B1011, B1101, B1110, B0111, B1011, B1101,
   B1110, B0111, B1011, B1101, B1110, B0111, B1011, B1101,
-
-
 };
 
 
@@ -197,48 +195,36 @@ void loop() {
 
   // BOTTOM red tactile button on podium breadboard
   // change vote counts to 888 (for LED digit testing)
-  if (!digitalRead(buttonCPin))
-  {
-    Serial.println("buttonCPin pressed; resetting current vote counts to 888");
+  if (!digitalRead(buttonCPin)){
+    Serial.println("buttonCPin pressed; setting current vote counts to 888");
     voteCountTrue = 888;
     voteCountFalse = 888;
   }
+  
   updatePodiumCommWired();
   updateCounts();
-
   updateLightBlink(patternA, 328, 150);
-
   eepromPopulateLastValues();
-
 
 }
 
-void updateLightBlink (byte input[], int length, int interval)
-{
+void updateLightBlink (byte input[], int length, int interval){
   if (currentMillis - previousMillis > interval) {
     digitalWrite(relayAPin, (input[currentPattern] & B00001000));
     digitalWrite(relayBPin, (input[currentPattern] & B00000100));
     digitalWrite(relayCPin, (input[currentPattern] & B00000010));
     digitalWrite(relayDPin, (input[currentPattern] & B00000001));
 
-
-    if (currentPattern < length - 1)
-    {
-      currentPattern++;
-    }
-    else
-    {
-      currentPattern = 0;
-    }
-
+    if (currentPattern < length - 1) currentPattern++;
+    else currentPattern = 0;
+    
     previousMillis = currentMillis;
   }
 
   return;
 }
 
-void updatePodiumCommWired()
-{
+void updatePodiumCommWired(){
   if (RZDEBUG) {
     if (Serial2.available()) {
       int inByte = Serial2.peek();
@@ -248,62 +234,47 @@ void updatePodiumCommWired()
   }
   byte podiumComm = Serial2.read();
 
-  if (podiumComm != 255)
-  {
-    if (podiumComm == 1)
-    {
+    if (podiumComm == 1){
       voteCountTrue++;
       if (RZDEBUG) Serial.println("podiumComm message 1 received");
     }
-    else if (podiumComm == 2)
-    {
+    else if (podiumComm == 2){
       voteCountFalse++;
       if (RZDEBUG) Serial.println("podiumComm message 2 received");
     }
-  }
+
   return;
 }
-void displayTrueCount(int count)
-{
+
+void displayTrueCount(int count){
   sevenSegDisplayString("^^^", true);
   sevenSegDisplayString((String)count, true);
   return;
 }
 
-void displayFalseCount(int count)
-{
+void displayFalseCount(int count){
   sevenSegDisplayString("^^^", false);
   sevenSegDisplayString((String)count, false);
   return;
 }
 
 //check to see if vote has changed, if so change numbers, set eeprom
-void updateCounts()
-{
-
-  if (lastVoteCountTrue != voteCountTrue)
-  {
+void updateCounts(){
+  if (lastVoteCountTrue != voteCountTrue){
     displayTrueCount(voteCountTrue);
-    //    eepromWriteUnsignedLong(disk1, voteCountTrueLastAddress, voteCountTrue); //update last count
     truevote.last = voteCountTrue;
-    //    eepromWriteUnsignedLong(disk1, voteCountTrueTotalAddress, (eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress)) + 1);
     truevote.total++;
     EEPROM.put(eepromStartAddress, truevote);
     //increment total vote count in eeprom
-
     lastVoteCountTrue = voteCountTrue;
     Serial.print("Current TRUE : ");
     Serial.println(voteCountTrue);
     Serial.print("Total TRUE : ");
-    //Serial.println(eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress));
     eepromPrintLastValues();
   }
-  if (lastVoteCountFalse != voteCountFalse)
-  {
+  if (lastVoteCountFalse != voteCountFalse){
     displayFalseCount(voteCountFalse);
-    //    eepromWriteUnsignedLong(disk1, voteCountFalseLastAddress, voteCountFalse);
     falsevote.last = voteCountFalse;
-    //    eepromWriteUnsignedLong(disk1, voteCountFalseTotalAddress, (eepromReadUnsignedLong(disk1, voteCountFalseTotalAddress)) + 1);
     falsevote.total++;
     EEPROM.put(eepromStartAddress + sizeof(voteprototype), falsevote);
     //increment total vote count in eeprom
@@ -311,22 +282,19 @@ void updateCounts()
     Serial.print("Current FALSE : ");
     Serial.println(voteCountFalse);
     Serial.print("Total FALSE : ");
-    //Serial.println(eepromReadUnsignedLong(disk1, voteCountTrueTotalAddress));
     eepromPrintLastValues();
   }
 }
 
 //read the last values from the eeprom and update them
-void eepromPopulateLastValues()
-{
-  // load prior eeprom data, if any
+void eepromPopulateLastValues(){
+  // load prior eeprom data, if any, into structs
   truevote = EEPROM.get(eepromStartAddress, voteprototype);
   falsevote = EEPROM.get(eepromStartAddress + sizeof(vote), voteprototype);
   return;
 }
 
-void eepromPrintLastValues()
-{
+void eepromPrintLastValues(){
   Serial.print("total true votes from eeprom: ");
   Serial.println(truevote.total);
   Serial.print("total false votes from eeprom: ");
@@ -341,22 +309,14 @@ void eepromPrintLastValues()
 /*
   Function: break down string into chars and send
 */
-void sevenSegDisplayString(String displayString, boolean group)
-{
-  // RZ COMMENTED OUT LINE BELOW
-  //  Serial.println(displayString); //send string req
-  for (int i = 0; i < displayString.length(); i++)
-    //for(int i = 5; i >= 0; i--) //assumption of a 6 char string
-  {
-    sevenSegDisplayChar(displayString.charAt(i), group);
-  }
-  if (group)
-  {
+void sevenSegDisplayString(String displayString, boolean group){
+  for (int i = 0; i < displayString.length(); i++) sevenSegDisplayChar(displayString.charAt(i), group);
+
+  if (group){
     digitalWrite(sevenSegLatchPinTrue, LOW); //toggle latch
     digitalWrite(sevenSegLatchPinTrue, HIGH);
   }
-  else
-  {
+  else{
     digitalWrite(sevenSegLatchPinFalse, LOW); //toggle latch
     digitalWrite(sevenSegLatchPinFalse, HIGH);
   }
