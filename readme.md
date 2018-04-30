@@ -10,8 +10,8 @@ obviated 4/13/18 | communication trouble | new female–female ethernet connecto
 as of 4/26/18 the connectors are on hand but sufficiently large capacity wire nuts are needed | power to "CAPITALISM" marquee is dangerous | new 6-conductor connectors | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating. As of 4/26 I have the connectors and will acquire wire nuts to attach the sign-side plug.
 deemed unnecessary to work on 4/13/18 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
 fixed 4/26/18 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
-partly complete 4/26/18 | chassis grounding | grounding pigtails, bus connection posts | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly. (needed: bus connection bars; self-tapping screws to mount same)
-gathering parts 4/26/18 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
+complete enough 4/29/18 | chassis grounding | grounding pigtails, bus connection posts | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly. (needed: bus connection bars; self-tapping screws to mount same)
+mostly done 4/29/18 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
 
 
 # repair log and notes
@@ -221,3 +221,15 @@ Completed chassis ground point installation: the TRUE and FALSE sides have groun
 * male plug with ground wire (1)
 * stranded black or green wire, low voltage, ~20AWG (20 ft.)
 * self-tapping sheet metal screws
+
+## 4/29/18 2:30–6:45 p.m.
+
+Added proper grounding wiring to the TRUE sign. Completed connections using new connectors (i.e. podium has a leash which leads to TRUE side, and FALSE side has a leash which leads to TRUE side as well; both have marked plugs inside TRUE cabinet).
+
+Updated version to v.17 to reflect working software, tagged in git (commit `732e881`). N.b.: there is more software work that *could* be done, but it's not truly necessary. (The biggest bug is that the votes both increment by one when the sign is power cycled…not terrible.)
+
+Updated main to-do list with progress.
+
+Finished up work on the TRUE and FALSE signs, and put them back in their crates for transportation to campus—however, as we were loading the FALSE side, we noticed that the seven-segment display was only attached to the sign on one side and was flexing and hinging around the other side. Not so great! This will have to be mechanically repaired in the assembly and mounting process.
+
+Deleted extra files used during development to clean up the repo. (Go through the history to find these if needed/wanted.)
