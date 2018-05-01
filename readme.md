@@ -233,3 +233,11 @@ Updated main to-do list with progress.
 Finished up work on the TRUE and FALSE signs, and put them back in their crates for transportation to campus—however, as we were loading the FALSE side, we noticed that the seven-segment display was only attached to the sign on one side and was flexing and hinging around the other side. Not so great! This will have to be mechanically repaired in the assembly and mounting process.
 
 Deleted extra files used during development to clean up the repo. (Go through the history to find these if needed/wanted.)
+
+## 4/30/18 11:30 a.m.–6:30 p.m.
+
+Moved crated signs from Kathy's house to campus, and assembled the sign in front of CFA.
+
+## 8–9 p.m.
+
+Interconnected two lower sign sections via cables. Ran power to podium, and from there to the sign as well. Started up sign and after resetting EEPROM it ran properly for a half hour or so, and then shut down. To be investigated 5/1.
