@@ -1,0 +1,58 @@
+*Pick And Place List
+*Company=
+*Author=
+*eMail=
+*
+*Project=capPodiumCircuit
+*Date=12:43:12
+*CreatedBy=Fritzing 0.9.3b.04.19.5c895d327c44a3114e5fcc9d8260daf0cbb52806
+*
+*
+*Coordinates in mm, always center of component
+*Origin 0/0=Lower left corner of PCB
+*Rotation in degree (0-360, math. pos.)
+*
+*No;Value;Package;X;Y;Rotation;Side;Name
+1;;THT;38.5074;-6.41695;90;Bottom;J7
+2;;;55.9219;-7.53878;0;Bottom;TXT2
+3;;;14.6116;-4.09672;0;Bottom;TXT1
+4;;;30.9721;-6.8685;0;Bottom;TXT2
+5;1k;THT;10.4404;-40.4529;0;Bottom;R2
+6;;;38.3804;-20.1329;0;Bottom;Via4
+7;;;28.2204;-32.8329;0;Bottom;Via1
+8;;THT;62.2564;-15.1799;0;Bottom;J1
+9;;;31.3787;-15.3528;0;Bottom;IMG1
+10;;;46.0004;-20.1329;0;Bottom;Via5
+11;;THT;62.2564;-25.3399;0;Bottom;J2
+12;;DIP (Dual Inline) [THT];19.3304;-26.4829;0;Bottom;SN75HVD3082EP
+13;;;54.4246;-17.7455;0;Bottom;TXT2
+14;;THT;62.2564;-45.6599;0;Bottom;J4
+15;;;5.36042;-9.97295;0;Bottom;Hole2
+16;5V;to220-igo;23.4579;-50.6129;90;Bottom;7805
+17;;;43.4604;-37.9044;0;Bottom;Arduino Nano R3
+18;1k;THT;5.36042;-20.1329;90;Bottom;R3
+19;;THT;48.6674;-6.41695;90;Bottom;J6
+20;;;54.2013;-22.7342;0;Bottom;TXT2
+21;;THT;62.2564;-35.4999;0;Bottom;J3
+22;;THT;62.2564;-55.8199;0;Bottom;J5
+23;;;54.5612;-32.8329;0;Bottom;TXT2
+24;;;28.214;-37.9001;0;Bottom;Via7
+25;;;54.4268;-27.7672;0;Bottom;TXT2
+26;;;40.9204;-20.1329;0;Bottom;Via3
+27;;;54.8139;-43.1732;0;Bottom;TXT2
+28;;5 mm [THT];5.36042;-36.064;180;Bottom;TX
+29;;;56.4694;-5.56322;0;Bottom;TXT2
+30;;rj45-8;19.9654;-12.2029;0;Bottom;RJ45 jack
+31;;5 mm [THT];5.36042;-28.444;0;Bottom;RX
+32;;;61.2404;-4.89295;0;Bottom;Hole1
+33;;;43.4604;-20.1329;0;Bottom;Via2
+34;;;54.6193;-57.7779;0;Bottom;TXT2
+35;;;54.7486;-53.2465;0;Bottom;TXT2
+36;;power_jack_pth;7.03912;-52.0242;90;Bottom;9–12V in, center +
+37;;;28.2204;-58.2329;0;Bottom;Hole3
+38;;;54.8434;-38.007;0;Bottom;TXT2
+39;;;30.6362;-9.05573;0;Bottom;TXT2
+40;220;THT;12.9804;-25.2129;-90;Bottom;R1
+41;;;54.9051;-12.5693;0;Bottom;TXT2
+42;;;16.8022;-2.5772;0;Bottom;TXT1
+43;;;54.6847;-47.7046;0;Bottom;TXT2
