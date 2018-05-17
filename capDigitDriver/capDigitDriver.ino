@@ -14,7 +14,7 @@ AltSoftSerial altSerial;
 
 // tie this pin to gnd to mark this as the "FALSE" side, or
 // leave this pin floating to mark this as the "TRUE" side
-const int SIDEPIN = A7;
+const int SIDEPIN = A5;
 bool TRUESIDE; // this bool will be set by wiring in the setup()
 
 const int RS485RECEIVEENABLEPIN = 7; // RS485 transceiver: pull this pin low to receive
@@ -48,6 +48,7 @@ void loop() {
       Serial.print("false value received: ");
       Serial.println(inVal);
     }
+    else altSerial.read(); // discard any data that arrived mangled
   }
 
   // print the value on the local 7-segment display
