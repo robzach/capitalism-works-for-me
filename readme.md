@@ -249,3 +249,34 @@ Began debugging the sign's apparent shutdown. Plugged it in and it worked anew. 
 Added new connector to marquee lighting so that no Wago connectors or wire nuts are needed for breaking and making that connection. Will do the same in replacing the other marquee connector, which was somewhat damaged in transportation (I temporarily made one of its connections with a wire nut).
 
 Moved the remaining crate to Kathy's office for temporary storage.
+
+## 5/14/18 noon–1 p.m. and 3–6:30 p.m.
+
+Work on assembling new (version 18) software and hardware.
+
+## 5/15/18 3–5:45 p.m.
+
+Work on assembling, testing, and correcting new electronics hardware.
+
+## 5/16/18 9 a.m.–1:30 p.m., 2–5 p.m., and 9:30–10 p.m.
+
+Work on new electronics (9–10:30 a.m.); disassembly of the installation (10:30 a.m.–1:30 p.m.); further disassembly and cleanup, including covering crates with tarps for overnight rain protection (2–5 p.m.); and preparing overnight stress test of new electronics hardware and software (9:30–10 p.m.).
+
+## 5/17/18 10 a.m.–12:30 p.m.
+
+Move CAPIT, ALISM, and sign bracket crates to FMS warehouse for temporary storage.
+
+# Hours worked up to this point: 61.5 hours
+
+# replacement parts purchase accounting
+
+date | vendor | item | quantity | explanation | line total cost
+---|---|---|---|---|---
+4/26 | Home Depot | wire nuts assortment | 1 bag | for rewiring 120V terminals | $4.87
+4/26 | Home Depot | 3-prong plug | 1 | to tie chassis ground to wired ground | $2.79
+4/26 | Home Depot | ground bar | 2 | to make ground bus in sign and podium | $6.56
+4/26 | Home Depot | pan head stainless screws, self-drilling, #8, 3/4" length | 1 box | for making new physical mounting points in sign chassis | $5.21
+4/26 | Home Depot | 16 AWG green stranded wire | 24' | for adding ground paths in sign chassis | $5.55
+4.26 | Home Depot | cable ties with mount hole, 8" length | 100 pack | for various chassis affixing | $8.88
+4/26 | Home Depot | grounding pigtails | 5 pack | for adding ground points to sign and podium chassis | $3.27
+4/26 | Home Depot | sales tax ||| $2.60
