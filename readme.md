@@ -295,8 +295,8 @@ date | vendor | item | quantity | explanation | line total cost
 5/14 | McMaster-Carr | 6-conductor wire connector (part 9552T2) | 1 pair | to replace old connectors, running 120V to ALISM | $11.62
 5/14 | McMaster-Carr | 4-conductor wire connector (part 9552T4) | 2 pair | to replace old connectors running 36V to 7-segment LEDs and white illumination behind FALSE | $18.00
 5/14 | McMaster-Carr | shipping ||| $5.85
-5/14 | Amazon | 12V 2A power supply <https://www.amazon.com/gp/product/B019Q3U72M> | 3 | to supply power to new logic boards (one in podium; one by FALSE; one by TRUE) | $23.97
+5/14 | Amazon | [12V 2A power supply](https://www.amazon.com/gp/product/B019Q3U72M) | 3 | to supply power to new logic boards (one in podium; one by FALSE; one by TRUE) | $23.97
 5/14 | Amazon | 12' white extension cord | 2 | to run 120V power from center of sign to TRUE and FALSE sides for their 12V transformers | $5.79
-5/14 | Amazon | 240mmx160mmx90mm ABS enclosure with clear face <https://www.amazon.com/gp/product/B07122FQQ7> | 3 | to contain and protect new electronics at podium, by FALSE, and by TRUE | $59.97
+5/14 | Amazon | [240mmx160mmx90mm ABS enclosure with clear face](https://www.amazon.com/gp/product/B07122FQQ7) | 3 | to contain and protect new electronics at podium, by FALSE, and by TRUE | $59.97
 5/14 | Amazon | three-way RJ45 (ethernet) splitter |1 | to allow one podium signal to break into FALSE and TRUE signals | $6.22
 **sum** | ||| as of 5/21 | **$322.82**
