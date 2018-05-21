@@ -266,12 +266,14 @@ Work on new electronics (9–10:30 a.m.); disassembly of the installation (10:30
 
 Move CAPIT, ALISM, and sign bracket crates to FMS warehouse for temporary storage.
 
-# Hours worked up to this point: 61.5 hours
+## Hours worked up to this point: 61.5 hours
 
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
 ---|---|---|---|---|---
+4/25 | McMaster-Carr | 6-conductor wire connector (part 9552T2) | 1 pair | to replace old connectors, running 120V to CAPIT | $11.62
+4/25 | McMaster-Carr | shipping ||| $5.84
 4/26 | Home Depot | wire nuts assortment | 1 bag | for rewiring 120V terminals | $4.87
 4/26 | Home Depot | 3-prong plug | 1 | to tie chassis ground to wired ground | $2.79
 4/26 | Home Depot | ground bar | 2 | to make ground bus in sign and podium | $6.56
@@ -280,3 +282,20 @@ date | vendor | item | quantity | explanation | line total cost
 4.26 | Home Depot | cable ties with mount hole, 8" length | 100 pack | for various chassis affixing | $8.88
 4/26 | Home Depot | grounding pigtails | 5 pack | for adding ground points to sign and podium chassis | $3.27
 4/26 | Home Depot | sales tax ||| $2.60
+5/7 | OSH Park | custom PCB for new logic boards | 3 | see design files for details | $65.50
+5/7 | OSH Park | express shipping ||| $24.70
+5/9 | Digi-Key | 2-position terminal block, 0.2" spacing (part 1920-1323-ND) | 25 | terminals on new logic boards | $11.35
+5/9 | Digi-Key | RS-485 half-duplex transmitter/receiver (part SN75HVD3082EP) | 4 | RJ-45 communication between new logic boards | $10.52
+5/9 | Digi-Key | power jack connector (part CP-037A-ND) **note: wrong part! substituted with found parts from lab instead** | 4 | barrel jack to bring 12V power to new logic boards | $2.32
+5/9 | Digi-Key | 5V power regulator (part 296-39515-5-ND) | 4 | regulate 12V down to 5V for Arduino Nano and other logic on new boards | $2.32
+5/9 | Digi-Key | board-mount ethernet jack (part AE10384-ND) | 4 | connection point for RJ45 cable to new logic boards | $2.76
+5/9 | Digi-Key | 8 position DIP socket (part AE9986-ND) | 4 | to seat RS-485 chip on new logic boards, removably | $0.72
+5/9 | Digi-Key | 15-position female header (part S7048-ND) | 4 | to seat Arduino Nano on new logic boards, removably | $4.08
+5/9 | Digi-Key | shipping and sales tax ||| $9.94
+5/14 | McMaster-Carr | 6-conductor wire connector (part 9552T2) | 1 pair | to replace old connectors, running 120V to ALISM | $11.62
+5/14 | McMaster-Carr | 4-conductor wire connector (part 9552T4) | 2 pair | to replace old connectors running 36V to 7-segment LEDs and white illumination behind FALSE | $18.00
+5/14 | McMaster-Carr | shipping ||| $5.85
+5/14 | Amazon | 12V 2A power supply <https://www.amazon.com/gp/product/B019Q3U72M> | 3 | to supply power to new logic boards (one in podium; one by FALSE; one by TRUE) | $23.97
+5/14 | Amazon | 12' white extension cord | 2 | to run 120V power from center of sign to TRUE and FALSE sides for their 12V transformers | $5.79
+5/14 | Amazon | 240mmx160mmx90mm ABS enclosure with clear face <https://www.amazon.com/gp/product/B07122FQQ7> | 3 | to contain and protect new electronics at podium, by FALSE, and by TRUE | $59.97
+5/14 | Amazon | three-way RJ45 (ethernet) splitter |1 | to allow one podium signal to break into FALSE and TRUE signals | $6.22
