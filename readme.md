@@ -266,7 +266,11 @@ Work on new electronics (9–10:30 a.m.); disassembly of the installation (10:30
 
 Move CAPIT, ALISM, and sign bracket crates to FMS warehouse for temporary storage.
 
-## Hours worked up to this point: 61.5 hours
+## 5/21/18 6:30–8 p.m.
+
+Compiling work log and accounting for all purchases.
+
+## Hours worked up to this point: 63 hours
 
 # replacement parts purchase accounting
 
