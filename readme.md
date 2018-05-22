@@ -299,4 +299,9 @@ date | vendor | item | quantity | explanation | line total cost
 5/14 | Amazon | 12' white extension cord | 2 | to run 120V power from center of sign to TRUE and FALSE sides for their 12V transformers | $5.79
 5/14 | Amazon | [240mmx160mmx90mm ABS enclosure with clear face](https://www.amazon.com/gp/product/B07122FQQ7) | 3 | to contain and protect new electronics at podium, by FALSE, and by TRUE | $59.97
 5/14 | Amazon | three-way RJ45 (ethernet) splitter |1 | to allow one podium signal to break into FALSE and TRUE signals | $6.22
-**sum** | ||| as of 5/21 | **$322.82**
+5/16 | McMaster-Carr | #8 steel washers (part 98023A113) | pack of 100 | needed for crate/packing hardware | $7.54
+5/16 | McMaster-Carr | countersunk washers (part 98466A009) | pack of 100 | needed for crate/packing hardware | $4.09
+5/16 | McMaster-Carr | 5/16"-18 nuts (part 94895A030) | pack of 100 | spares needed for crating/packing | $5.12
+5/16 | McMaster-Carr | washers for 5/16" bolts | pack of 100 | spares needed for crating/packing | $5.10
+5/16 | McMaster-Carr | shipping ||| $5.95
+**sum** | ||| as of 5/21 | **$350.62**
