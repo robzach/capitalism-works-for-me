@@ -17,6 +17,11 @@ AltSoftSerial altSerial;
 const int SIDEPIN = A5;
 bool TRUESIDE; // this bool will be set by wiring in the setup()
 
+// SPI pins
+const int SCK = 13;
+const int MISO = 12;
+const int MOSI = 11;
+
 const int RS485RECEIVEENABLEPIN = 7; // RS485 transceiver: pull this pin low to receive
 
 void setup() {

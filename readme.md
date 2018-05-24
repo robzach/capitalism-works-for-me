@@ -249,3 +249,79 @@ Began debugging the sign's apparent shutdown. Plugged it in and it worked anew. 
 Added new connector to marquee lighting so that no Wago connectors or wire nuts are needed for breaking and making that connection. Will do the same in replacing the other marquee connector, which was somewhat damaged in transportation (I temporarily made one of its connections with a wire nut).
 
 Moved the remaining crate to Kathy's office for temporary storage.
+
+## 5/14/18 noon–1 p.m. and 3–6:30 p.m.
+
+Work on assembling new (version 18) software and hardware.
+
+## 5/15/18 3–5:45 p.m.
+
+Work on assembling, testing, and correcting new electronics hardware.
+
+## 5/16/18 9 a.m.–1:30 p.m., 2–5 p.m., and 9:30–10 p.m.
+
+Work on new electronics (9–10:30 a.m.); disassembly of the installation (10:30 a.m.–1:30 p.m.); further disassembly and cleanup, including covering crates with tarps for overnight rain protection (2–5 p.m.); and preparing overnight stress test of new electronics hardware and software (9:30–10 p.m.).
+
+## 5/17/18 10 a.m.–12:30 p.m.
+
+Move CAPIT, ALISM, and sign bracket crates to FMS warehouse for temporary storage.
+
+## 5/21/18 6:30–8 p.m.
+
+Compiling work log and accounting for all purchases.
+
+## Hours worked up to this point: 63 hours
+
+## 5/24/18 5:45–
+
+Opened up back of TRUE side. Tested driving TRUE side seven-segment display ([manufacturer's documentation of the Big Digit Display](https://wiki.evilmadscientist.com/Using_The_Big_Digit_Driver#Communication)) with my new hardware using the SPI interface, and it is successful (digits display 456 upon running the test code, `bigDigitDisplaySPItest`, commit `1af5522`). 
+
+The 2&times;3 male header on the Big Digit Display needs to have four connections made as per the standard SPI scheme:
+
+connect to | 2&times;3 pin # | 2&times;3 pin # | connect to
+--- | --- | --- | ---
+Arduino MISO | 1 | 2 | not used
+Arduino SCK | 3 | 4  | Arduino MOSI
+not used | 5 | 6 | ground
+
+Pin 1 on the Big Digit Display is marked with a triangle on the PCB.
+
+
+
+# replacement parts purchase accounting
+
+date | vendor | item | quantity | explanation | line total cost
+---|---|---|---|---|---
+4/25 | McMaster-Carr | 6-conductor wire connector (part 9552T2) | 1 pair | to replace old connectors, running 120V to CAPIT | $11.62
+4/25 | McMaster-Carr | shipping ||| $5.84
+4/26 | Home Depot | wire nuts assortment | 1 bag | for rewiring 120V terminals | $4.87
+4/26 | Home Depot | 3-prong plug | 1 | to tie chassis ground to wired ground | $2.79
+4/26 | Home Depot | ground bar | 2 | to make ground bus in sign and podium | $6.56
+4/26 | Home Depot | pan head stainless screws, self-drilling, #8, 3/4" length | 1 box | for making new physical mounting points in sign chassis | $5.21
+4/26 | Home Depot | 16 AWG green stranded wire | 24' | for adding ground paths in sign chassis | $5.55
+4.26 | Home Depot | cable ties with mount hole, 8" length | 100 pack | for various chassis affixing | $8.88
+4/26 | Home Depot | grounding pigtails | 5 pack | for adding ground points to sign and podium chassis | $3.27
+4/26 | Home Depot | sales tax ||| $2.60
+5/7 | OSH Park | custom PCB for new logic boards | 3 | see design files for details | $65.50
+5/7 | OSH Park | express shipping ||| $24.70
+5/9 | Digi-Key | 2-position terminal block, 0.2" spacing (part 1920-1323-ND) | 25 | terminals on new logic boards | $11.35
+5/9 | Digi-Key | RS-485 half-duplex transmitter/receiver (part SN75HVD3082EP) | 4 | RJ-45 communication between new logic boards | $10.52
+5/9 | Digi-Key | power jack connector (part CP-037A-ND) **note: wrong part! substituted with found parts from lab instead** | 4 | barrel jack to bring 12V power to new logic boards | $2.32
+5/9 | Digi-Key | 5V power regulator (part 296-39515-5-ND) | 4 | regulate 12V down to 5V for Arduino Nano and other logic on new boards | $2.32
+5/9 | Digi-Key | board-mount ethernet jack (part AE10384-ND) | 4 | connection point for RJ45 cable to new logic boards | $2.76
+5/9 | Digi-Key | 8 position DIP socket (part AE9986-ND) | 4 | to seat RS-485 chip on new logic boards, removably | $0.72
+5/9 | Digi-Key | 15-position female header (part S7048-ND) | 4 | to seat Arduino Nano on new logic boards, removably | $4.08
+5/9 | Digi-Key | shipping and sales tax ||| $9.94
+5/14 | McMaster-Carr | 6-conductor wire connector (part 9552T2) | 1 pair | to replace old connectors, running 120V to ALISM | $11.62
+5/14 | McMaster-Carr | 4-conductor wire connector (part 9552T4) | 2 pair | to replace old connectors running 36V to 7-segment LEDs and white illumination behind FALSE | $18.00
+5/14 | McMaster-Carr | shipping ||| $5.85
+5/14 | Amazon | [12V 2A power supply](https://www.amazon.com/gp/product/B019Q3U72M) | 3 | to supply power to new logic boards (one in podium; one by FALSE; one by TRUE) | $23.97
+5/14 | Amazon | 12' white extension cord | 2 | to run 120V power from center of sign to TRUE and FALSE sides for their 12V transformers | $5.79
+5/14 | Amazon | [240mmx160mmx90mm ABS enclosure with clear face](https://www.amazon.com/gp/product/B07122FQQ7) | 3 | to contain and protect new electronics at podium, by FALSE, and by TRUE | $59.97
+5/14 | Amazon | three-way RJ45 (ethernet) splitter |1 | to allow one podium signal to break into FALSE and TRUE signals | $6.22
+5/16 | McMaster-Carr | #8 steel washers (part 98023A113) | pack of 100 | needed for crate/packing hardware | $7.54
+5/16 | McMaster-Carr | countersunk washers (part 98466A009) | pack of 100 | needed for crate/packing hardware | $4.09
+5/16 | McMaster-Carr | 5/16"-18 nuts (part 94895A030) | pack of 100 | spares needed for crating/packing | $5.12
+5/16 | McMaster-Carr | washers for 5/16" bolts | pack of 100 | spares needed for crating/packing | $5.10
+5/16 | McMaster-Carr | shipping ||| $5.95
+**sum** | ||| as of 5/21 | **$350.62**
