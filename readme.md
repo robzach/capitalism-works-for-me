@@ -272,6 +272,22 @@ Compiling work log and accounting for all purchases.
 
 ## Hours worked up to this point: 63 hours
 
+## 5/24/18 5:45–
+
+Opened up back of TRUE side. Tested driving TRUE side seven-segment display ([manufacturer's documentation of the Big Digit Display](https://wiki.evilmadscientist.com/Using_The_Big_Digit_Driver#Communication)) with my new hardware using the SPI interface, and it is successful (digits display 456 upon running the test code, `bigDigitDisplaySPItest`, commit `1af5522`). 
+
+The 2&times;3 male header on the Big Digit Display needs to have four connections made as per the standard SPI scheme:
+
+connect to | 2&times;3 pin # | 2&times;3 pin # | connect to
+--- | --- | --- | ---
+Arduino MISO | 1 | 2 | not used
+Arduino SCK | 3 | 4  | Arduino MOSI
+not used | 5 | 6 | ground
+
+Pin 1 on the Big Digit Display is marked with a triangle on the PCB.
+
+
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
