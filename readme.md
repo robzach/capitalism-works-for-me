@@ -272,7 +272,7 @@ Compiling work log and accounting for all purchases.
 
 ## Hours worked up to this point: 63 hours
 
-## 5/24/18 5:45–
+## 5/24/18 5:45–10 p.m., 10:45–11:30 p.m.
 
 Opened up back of TRUE side. Tested driving TRUE side seven-segment display ([manufacturer's documentation of the Big Digit Display](https://wiki.evilmadscientist.com/Using_The_Big_Digit_Driver#Communication)) with my new hardware using the SPI interface, and it is successful (digits display 456 upon running the test code, `bigDigitDisplaySPItest`, commit `1af5522`). 
 
@@ -286,7 +286,16 @@ not used | 5 | 6 | ground
 
 Pin 1 on the Big Digit Display is marked with a triangle on the PCB.
 
+Rewrote `capDigitDisplay` sketch to include both SPI driving code and serial (RS485) data in. After trying to incorporate the newer SPI library (which postdates the original documentation for the display), I reverted back to pushing out data in the simplest, byte-by-byte fashion, in the mold of the example code supplied by the manufacturer. The SPI library simply wasn't updating the display despite some long attempts.
 
+`capDigitDisplay`, commit `83e7f96` on `v18dev` branch, successfully receives RS485 data and prints the last three digits of any transmitted number to the 7-segment display it's attached to via SPI.
+
+`podium7segdisplay`, commit `29bcd67` on `v18dev` branch, successfully displays a countdown from 15 seconds on the podium's 7-segment display via SPI. It will need to be expanded to:
+
+* read the two voting buttons,
+* send vote totals via RS485 once per second,
+* store vote totals to EEPROM in case of power cycling (and read last stored values at startup), and
+* read case-mounted pushbuttons for manual vote resetting, 888 digit testing, etc.
 
 # replacement parts purchase accounting
 
