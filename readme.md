@@ -354,7 +354,7 @@ Putting off that question for the moment, worked to put the pieces together, rea
 
 Sketches that are working: on the podium controller, `capPodiumV18`; on the digit driver, `capDigitDriverV18`, both commit `232cba6` on `v18dev` branch.
 
-Ordered more materials needed to complete fabrication: VHB tape, grounded plug, screw terminals, pass-through ethernet extension cables, and silicone sealant.
+Ordered more materials needed to complete fabrication: VHB tape, grounded plug, screw terminals, pass-through ethernet extension cables, silicone sealant, and dessicant packs.
 
 # replacement parts purchase accounting
 
@@ -392,5 +392,5 @@ date | vendor | item | quantity | explanation | line total cost
 5/16 | McMaster-Carr | 5/16"-18 nuts (part 94895A030) | pack of 100 | spares needed for crating/packing | $5.12
 5/16 | McMaster-Carr | washers for 5/16" bolts | pack of 100 | spares needed for crating/packing | $5.10
 5/16 | McMaster-Carr | shipping ||| $5.95
-to add: 5/26 Amazon order, total $46.66
+to add: 5/26 Amazon order, total $55.13
 **sum** | ||| as of 5/21 | **$350.62**
