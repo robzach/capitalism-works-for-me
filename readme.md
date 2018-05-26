@@ -297,6 +297,65 @@ Rewrote `capDigitDisplay` sketch to include both SPI driving code and serial (RS
 * store vote totals to EEPROM in case of power cycling (and read last stored values at startup), and
 * read case-mounted pushbuttons for manual vote resetting, 888 digit testing, etc.
 
+## 5/25/18 a half hour
+
+Emailing with Windell Oskay of Evil Mad Scientist, vendor of the Big Digit Driver, about technical troubleshooting. Thanks for your help and advice, Windell!
+
+## 5/26/18 10–11 a.m., 1–5:15 p.m.
+
+Using new ribbon cable and 2&times;3 DIN female socket to connect digit-driving Arduino to the Big Digit Driver; works fine upon testing.
+
+### Attempted overcurrent debugging on 7-segment display, TRUE side
+
+I'm using an ammeter in series with Big Digit Display's 36V supply line to test current on each segment; if it's too high, that could be the culprit for segments burning out. As per Windell Oskay's advice, each segment should be drawing 78mA.
+
+The quiescent (no segments lit) draw of the driver circuitry is at the edge of my multimeter's lower range: it's between 0.00A and 0.01A, so we'll call it 5mA.
+
+I wrote `serialCommandsToLightBigDigitSegments` to allow for testing of each individual segment and investigate for overcurrent, which may be burning segments out. Runnning commit `fc0aab6` on `v18dev` branch. 
+
+**Test 1:** Current draw on individual segments, lit one at a time. Note that segment designations are from the [manufacturer's documentation of the Big Digit Display](https://wiki.evilmadscientist.com/Using_The_Big_Digit_Driver#Communication).
+
+digit | segment | current draw
+--- | --- | ---
+right | A | .08A
+right | B | .09A
+right | &#8942; | .09A
+right | G | .09A
+center | A | .09A
+center | B | .09A
+center | C | .09A
+center | D | .09A
+center | E | .01A (this segment is burned out)
+center | F | .09A
+center | G | .09A
+left | A | .09A
+left | &#8942; | .09A
+left | G | .09A
+
+In conclusion, everything's drawing just about the same, except for the burned out segment. And everything's drawing a hair too much, but steady state overcurrent does not appear to be the problem.
+
+**Test 2:** Current draw on multiple segments lit concurrently, to make sure everything's adding linearly as it should be.
+
+digit | segments | current draw | avg. current/segment (calculated)
+--- | --- | --- | ---
+right | A,B | .17A | .085A
+right | A,C | .17A | .085A
+right | A,B,C | .25A | .083A
+right | A,B,C,D | .33A |.083A
+right | A,B,C,D,E | .41A | .082A
+right | A,B,C,D,E,F | .49A | .082A
+right | A,B,C,D,E,F,G | .58A | .083A
+
+Looks fine. Again, current per segment is slighly higher than would be desired—83mA instead of 78mA—but that small difference is unlikely to be the culprit.
+
+**Conclusion from tests 1 and 2: overcurrent isn't the likely cause. Look for grounding trouble.**
+
+Putting off that question for the moment, worked to put the pieces together, read the podium buttons, and send data over the cat5 cable to the receiving board in the sign. It works!
+
+Sketches that are working: on the podium controller, `capPodiumV18`; on the digit driver, `capDigitDriverV18`, both commit `232cba6` on `v18dev` branch.
+
+Ordered more materials needed to complete fabrication: VHB tape, grounded plug, screw terminals, pass-through ethernet extension cables, and silicone sealant.
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
@@ -333,4 +392,5 @@ date | vendor | item | quantity | explanation | line total cost
 5/16 | McMaster-Carr | 5/16"-18 nuts (part 94895A030) | pack of 100 | spares needed for crating/packing | $5.12
 5/16 | McMaster-Carr | washers for 5/16" bolts | pack of 100 | spares needed for crating/packing | $5.10
 5/16 | McMaster-Carr | shipping ||| $5.95
+to add: 5/26 Amazon order, total $46.66
 **sum** | ||| as of 5/21 | **$350.62**
