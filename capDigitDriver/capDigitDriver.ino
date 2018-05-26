@@ -82,9 +82,9 @@ void ledDisplay(int num) {
   int tens = (num % 100) / 10;
   int hundreds = (num % 1000) / 100;
 
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(ones));
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(tens));
   shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(hundreds));
+  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(tens));
+  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(ones));
 
   digitalWrite(MISOpin, HIGH);
   digitalWrite(MISOpin, LOW);
