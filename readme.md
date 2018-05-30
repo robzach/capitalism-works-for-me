@@ -356,6 +356,30 @@ Sketches that are working: on the podium controller, `capPodiumV18`; on the digi
 
 Ordered more materials needed to complete fabrication: VHB tape, grounded plug, screw terminals, pass-through ethernet extension cables, silicone sealant, and dessicant packs.
 
+## 5/29/18 7:15–11:15 p.m.
+
+Investigating the ground fault, I scoped the difference between the Arduino's 12V DC supply with respect to the chassis of the sign; it had a huge swing with respect to it, in part because the big chassis itself catches some stray EMF. I will definitely need to tie the logic ground to the chassis to get rid of that big voltage between them.
+
+I mistakenly didn't add ground or 5V points in my PCB design (oops! Was maximizing available GPIO points) but this is easily enough solved by soldering jumpers onto the ground and 5V of the 7805 regulator.
+
+Made a new grounding plug for the podium (so that its chassis can be tied to electrical ground for safety).
+
+Wired up a logic ground bus on the TRUE side (this is the side of the sign I've been working on so far), so that the Arduino's logic ground can be reliably tied to the chassis. After doing this, but before turning on the breaker to allow line power to flow to the 120V electrical systems on the sign, I scoped the SPI logic signals from the Arduino to the Big Digit Driver, and they looked like reasonably good logic signals, switching between 0 and 5V without too much noise.
+
+HOWEVER: there is significant noise between the Arduino ground and the chassis (prior to connecting them electrically). The scope's ground is on the chassis, and its probe on the Arduino ground:
+
+<img src="/images/59KHz_hum.bmp"/>
+
+(Captured at the surprisingly low display resolution of the scope I'm using.) The dominant bumps have a period of ~17µs, so a frequency of ~59 KHz. This segment of the signal looks like it has a +4V DC offset, but it's actually just the top part of this 60 Hz wave:
+
+<img src="/images/60Hz_hum.bmp"/>
+
+Also worth noting: when the line power is switched on, so that the seven-segment LEDs are illuminated, if I make contact between the Arduino ground and the chassis, the LEDs which are off get a rapid, light flicker to them. Not good.
+
+IN UNRELATED NEWS: when I plugged in the podium power, instead of showing `00:15` and counting down, it's showing weird garbage like `0  0` or `FF0 ` or `0 00`. Not especially reassuring, since this was working without any trouble when I last used it. Tried debugging this, writing and uploading an SPI 7-segment-writing sketch, which worked without any trouble (that sketch: `SPI_7-seg_countup_test_for_podium_debugging`, commit `6ed6093` on `v18dev` branch). Since I'm not aware of anything having changed—electrically or otherwise—I don't know now why the podium's 7-segment display would now be acting up. When it rains.
+
+Calling it a night since many things are going wrong and I don't want to cause any more problems!
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
@@ -393,4 +417,7 @@ date | vendor | item | quantity | explanation | line total cost
 5/16 | McMaster-Carr | washers for 5/16" bolts | pack of 100 | spares needed for crating/packing | $5.10
 5/16 | McMaster-Carr | shipping ||| $5.95
 to add: 5/26 Amazon order, total $55.13
-**sum** | ||| as of 5/21 | **$350.62**
+5/29 | Amazon | clear-face electronic junction box | 1 | for marquee-driving Arduino | $8.99
+5/29 | Amazon | Arduino Nano | 5 | podium, TRUE side, FALSE side, and marquee (plus an extra) | $20.99
+5/29 | Amazon | tax ||| $1.80
+**sum** | ||| as of 5/29 | **$392.40**
