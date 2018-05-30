@@ -380,6 +380,18 @@ IN UNRELATED NEWS: when I plugged in the podium power, instead of showing `00:15
 
 Calling it a night since many things are going wrong and I don't want to cause any more problems!
 
+## 5/30/18 3–6 p.m.
+
+The one and only Garth Z. helped me with debugging this afternoon. The flicker in the Big Digit Display LEDs appears, fingerscrossedly, to be somewhat aided by a small change in the code driving it: slowing the SPI data rate makes something of a difference. (It still flickers a bit, but it's improved.) The relevant changes appear in `capDigitDriverV18`, commit `492e788`, `v18dev` branch.
+
+Trying to track down the flickering, we were, among other things, scoping the +36V supply for the BDD, and found that simply touching the oscilloscope's probe to the 36V supply terminal on the back of the ones digit would induce a big flicker across all the digits. Similarly, we observed that plugging and unplugging a small DC transformer (one of the 12V Arduino supplies) *simply on the same circuit* as the rest of the cabinet would reliably induce a big flicker. The tentative conclusion is that the BDDs are very sensitive to very small, transient changes in the supply voltage. These changes were too small and/or brief for us to be able to actually scope them.
+
+A simple solution, which I'll try tomorrow, is putting a 50V capacitor across the 36V terminals behind the ones digit: if that helps smooth the apparently harmful transients, then that's certainly an easy solution.
+
+Perhaps if small supply voltage transients can cause flickering, which may mean brief low-current conditions, then it is also capable of causing brief *high-current* conditions as well. If so, that could help explain the segments burning out. Absolutely unclear, but it's a possibility.
+
+Finally, we mapped out the logic ground for the whole project, which is not the same as the chassis (Earth) ground. In fact, at the 36V supply, the V- terminal floats about 200mV above the chassis. Moving forward, I will isolate the logic ground from the chassis; I originally thought tying them together would help solve problems, but I now believe it's now more trouble than trouble-solving.
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
