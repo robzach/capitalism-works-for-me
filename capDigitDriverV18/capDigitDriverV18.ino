@@ -89,9 +89,26 @@ void ledDisplay(int num) {
   shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(ones));
 
   digitalWrite(MISOpin, HIGH);
+  delay(5);
   digitalWrite(MISOpin, LOW);
 
   timer = millis();
+}
+
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
+{
+  uint8_t i;
+
+  for (i = 0; i < 8; i++)  {
+    if (bitOrder == LSBFIRST)
+      digitalWrite(dataPin, !!(val & (1 << i)));
+    else  
+      digitalWrite(dataPin, !!(val & (1 << (7 - i))));
+    delay(1);
+    digitalWrite(clockPin, HIGH);
+    delay(1);
+    digitalWrite(clockPin, LOW);    
+  }
 }
 
 byte segLookup(int digitIn) {
