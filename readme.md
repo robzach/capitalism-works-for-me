@@ -392,6 +392,44 @@ Perhaps if small supply voltage transients can cause flickering, which may mean 
 
 Finally, we mapped out the logic ground for the whole project, which is not the same as the chassis (Earth) ground. In fact, at the 36V supply, the V- terminal floats about 200mV above the chassis. Moving forward, I will isolate the logic ground from the chassis; I originally thought tying them together would help solve problems, but I now believe it's now more trouble than trouble-solving.
 
+## 5/31/18 an hour
+
+Used a bench supply set at 36V to try to determine the effect of a lower-noise power supply on the flickering of the LEDs. It did appear that there was less flickering. However, scoping the supply point of entry to the still showed more than a volt of peak-to-peak noise; this noise, apparently, is getting introduced along the path somewhere (which is confusing because it's a twisted pair that travels about 8 total feet through a metal pipe).
+
+On Garth's advice I also did some poking around looking at voltages on the BDD board; I saw correct (10V) falls across both the Zener diodes, perfectly fine (5.08V) supply at the VCC of both logic chips, and measured that all the 16Ω current sense resistors were, in fact, 16Ω within a few percent. I also removed the BDD's 74595 and manually jumpered 5V to each of the output pins, and cycled through all of the 7-segment segments without any problem.
+
+More figuring to do.
+
+## 6/1/18 2:15–3:45 p.m.
+
+Placed a 50V, 100µF electrolytic cap across the power supply port of the BDD and saw a huge smoothing effect.
+
+Without the cap (running off of a bench supply):
+
+<img src="/images/supplyAtBDD.jpg"/>
+
+With the cap:
+
+<img src="/images/supplyAtBDDwithCap.jpg"/>
+
+(Didn't have a USB stick on me at the moment so these are cell phone photos.)
+
+Despite smoothing the power significantly, there is still a flicker whenever the power in the sign is changed at all; if anything is plugged in or unplugged, the LEDs flicker.
+
+### The grounds aren't isolated from each other?
+
+The chassis ground should be totally isolated from the logic ground at this point, but I am able to consistently measure a 30Ω resistance between the two, so I'm now going to look for any sort of leak which may be the underlying problem. Additionally, I measure that with respect to the logic ground, the chassis ground is 3.5mV higher in potential. If these two things are consistently true, *V=IR* says that a stray 0.1mA should be constantly flowing from the chassis ground to the logic ground. I don't think a tenth of a milliamp is the problem here; I think the 30Ω resistance between the two grounds—rather than hundreds of thousands of ohms or greater—is the problem. They don't appear to be isolated.
+
+### The multimeter's asymmetric behavior
+
+The multimeter reads a steady 3.5mV difference between logic ground and chassis ground (the chassis is the higher potential). Reads –3.5mV with the leads reversed, which is expected behavior.
+
+However: measuring resistance between the two grounds, I get 30–45Ω with the multimeter's red lead on the chassis ground and the black lead on the logic ground (the value varies somewhat). I get 0.000Ω when the leads are reversed. Perhaps this is because there's a current flowing, and when that current agrees with the multimeter's test charge, the meter reports no resistance, and when it's flowing against the test charge, the meter interprets it as resistance.
+
+Measuring directly for current flow returns no value other than 0.0µA, with leads in either direction. The ~100µA I calculated above does not appear.
+
+In conclusion: I still don't understand.
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
