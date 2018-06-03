@@ -400,7 +400,7 @@ On Garth's advice I also did some poking around looking at voltages on the BDD b
 
 More figuring to do.
 
-## 6/1/18 2:15–3:45 p.m.
+## 6/1/18 2:15–3:45 p.m.; 4:30–5pm
 
 Placed a 50V, 100µF electrolytic cap across the power supply port of the BDD and saw a huge smoothing effect.
 
@@ -429,6 +429,14 @@ However: measuring resistance between the two grounds, I get 30–45Ω with the 
 Measuring directly for current flow returns no value other than 0.0µA, with leads in either direction. The ~100µA I calculated above does not appear.
 
 In conclusion: I still don't understand.
+
+### Seeking a new piece of hardware to drive the LEDs
+
+Figuring that perhaps there's a simple piece of hardware to drive the Big Digit LED segments, I searched in Digi-Key and Mouser to no avail, and had a conversation with a Digi-Key technical rep. We didn't find any part that would work for the application (the extant parts on the market tend to drive *far* fewer milliamps than these big segments require).
+
+## 6/3/18 1/2 hour
+
+Continued email correspondance with Evil Mad Scientist about trying to troubleshoot; [posted a question to an electronics forum](https://electronics.stackexchange.com/questions/377976/seeking-a-high-current-common-anode-led-display-driver) since I wasn't able to find any in Digi-Key or Mouser catalogs.
 
 # replacement parts purchase accounting
 
