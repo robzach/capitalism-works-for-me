@@ -434,9 +434,13 @@ In conclusion: I still don't understand.
 
 Figuring that perhaps there's a simple piece of hardware to drive the Big Digit LED segments, I searched in Digi-Key and Mouser to no avail, and had a conversation with a Digi-Key technical rep. We didn't find any part that would work for the application (the extant parts on the market tend to drive *far* fewer milliamps than these big segments require).
 
-## 6/3/18 1/2 hour
+## 6/3/18 an hour
 
-Continued email correspondance with Evil Mad Scientist about trying to troubleshoot; [posted a question to an electronics forum](https://electronics.stackexchange.com/questions/377976/seeking-a-high-current-common-anode-led-display-driver) since I wasn't able to find any in Digi-Key or Mouser catalogs.
+Continued email correspondance with Evil Mad Scientist about trying to troubleshoot; [posted a question to an electronics forum](https://electronics.stackexchange.com/questions/377976/seeking-a-high-current-common-anode-led-display-driver) since I wasn't able to find any in Digi-Key or Mouser catalogs. Heard back from a forum user, who suggested the TI chip referenced below.
+
+Heard back from Betlux (the LED manufacturer) about power requirements for the displays, which weren't quite clear from the [datasheet](http://betlux.com/product/LED_seven_segment_display/big_segment_LED_display/BL-SE1200A.PDF). The engineer there said that each segment of the display should be run with 20-80mA regulated current, at 30–33V.
+
+I had been considering replacing the BDD driver with a different part, TI TLC5960 ([datasheet](http://www.ti.com/lit/ds/symlink/tlc5916.pdf)), which *can* drive the needed current—but only at up to 20V. So unfortunately it won't work, and I don't believe any commercially manufactured part will.
 
 # replacement parts purchase accounting
 
