@@ -442,6 +442,20 @@ Heard back from Betlux (the LED manufacturer) about power requirements for the d
 
 I had been considering replacing the BDD driver with a different part, TI TLC5960 ([datasheet](http://www.ti.com/lit/ds/symlink/tlc5916.pdf)), which *can* drive the needed current—but only at up to 20V. So unfortunately it won't work, and I don't believe any commercially manufactured part will.
 
+## 6/5/18 6:45–9:45 p.m.
+
+### Still finding no particular driver problem
+
+Started by returning to logic analysis on the BDD driver board. I didn't find any voltages or currents outside of nominal, and, returning the BDD's V_LED supply to the cabinet's built-in supply (rather than the bench supply), I again didn't see any meaningful amount of flickering in the display.
+
+### Cleaning up, securing wires, removing old control system
+
+I decided to move on to cleaning up the old control system and wiring harnesses, and got fairly far through cleaning up wiring/routing on the TRUE side of the sign. I even took before and after pictures! (And forgot to copy them to the computer. Will do when I'm back in the space and put them here.)
+
+I added many zip ties, screwed into the aluminum frame, to act as good long-term wire harnesses. I'm wary of small pieces of adhesive for holding things in place—eventually, small–surface area adhesives seem to all fail—and I hope these attachment points will have much more longevity. I also affixed the second marquee light attachment connector, replacing the old one.
+
+Plenty more mechanical/wiring work to do here. Next up: the new control Nano which will just run the marquee pattern.
+
 # replacement parts purchase accounting
 
 date | vendor | item | quantity | explanation | line total cost
