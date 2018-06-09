@@ -3,11 +3,15 @@
 
    see <https://github.com/robzach/capitalism-works-for-me> for further information, including schematic
 
-   A subset of Alex Reben's 2010 "capSign" sketch. 
-   
+   A subset of Alex Reben's 2010 "capSign" sketch.
+
    Robert Zacharias, rz@rzach.me, 2018
 */
 
+//input buttons
+const int MARQUEE_MODE_BUTTON = 8;
+const int ALL_ON_BUTTON = 9;
+bool marqueeMode = true;
 
 //timing
 unsigned long previousMillis = 0;
@@ -83,6 +87,9 @@ void setup() {
   pinMode(RELAY_C_PIN, OUTPUT);
   pinMode(RELAY_D_PIN, OUTPUT);
 
+  pinMode(MARQUEE_MODE_BUTTON, INPUT_PULLUP);
+  pinMode(ALL_ON_BUTTON, INPUT_PULLUP);
+
   Serial.begin(9600);
 
   Serial.println("Sign program, by Alexander Reben 2011 alex@areben.com");
@@ -90,7 +97,20 @@ void setup() {
 }
 
 void loop() {
-  updateLightBlink(patternA, 328);
+
+  if (!digitalRead(MARQUEE_MODE_BUTTON)) marqueeMode = true;
+  if (!digitalRead(ALL_ON_BUTTON)) marqueeMode = false;
+
+  //regular mode
+  if (marqueeMode) updateLightBlink(patternA, 328);
+
+  //all-on mode (for confirming all the bulbs are good, photographs, etc.)
+  else {
+    digitalWrite(RELAY_A_PIN, HIGH);
+    digitalWrite(RELAY_B_PIN, HIGH);
+    digitalWrite(RELAY_C_PIN, HIGH);
+    digitalWrite(RELAY_D_PIN, HIGH);
+  }
 }
 
 void updateLightBlink (byte input[], int length) {
