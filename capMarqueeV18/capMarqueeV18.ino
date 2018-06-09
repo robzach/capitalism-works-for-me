@@ -9,8 +9,8 @@
 */
 
 //input buttons
-const int MARQUEE_MODE_BUTTON = 8;
-const int ALL_ON_BUTTON = 9;
+const int MARQUEE_MODE_BUTTON = 7;
+const int ALL_ON_BUTTON = 8;
 bool marqueeMode = true;
 
 //timing
@@ -18,10 +18,10 @@ unsigned long previousMillis = 0;
 const unsigned long MARQUEE_WAIT = 150; // milliseconds between marquee animation steps
 
 //relay
-const int RELAY_A_PIN = 2;
-const int RELAY_B_PIN = 3;
-const int RELAY_C_PIN = 4;
-const int RELAY_D_PIN = 5;
+const int RELAY_A_PIN = 9;
+const int RELAY_B_PIN = 10;
+const int RELAY_C_PIN = 11;
+const int RELAY_D_PIN = 12;
 static int currentPattern = 0;
 static int cuttentProgram = 0;
 static boolean relaySwitchFlag = false;
