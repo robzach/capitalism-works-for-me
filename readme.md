@@ -1,18 +1,5 @@
 My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://visitsteve.com/made/capitalism-works-for-me-truefalse/) piece for inclusion in the [Marx@200 show](http://www.spacepittsburgh.org/portfolio-view/marx200/) organized by CMU Profs. Kathy Newman and Susanne Slavick. Repair work carried out in April 2018 and installation completed on May 1st.
 
-# master list of issues:
-
-status | description | materials | comments
---- | --- | --- | ---
-fixed 4/13 (hopefully—5/1 upon installation, some may have burned out. TBD.) | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
-complete 4/26 | electronic connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
-obviated 4/13 | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
-5/1 one half of the sign has a new connector; the other half will be replaced with the same type as well | power to "CAPITALISM" marquee is dangerous | new 6-conductor connectors | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating. As of 4/26 I have the connectors and will acquire wire nuts to attach the sign-side plug.
-deemed unnecessary to work on 4/13 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
-fixed 4/26 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
-complete 4/29 | chassis grounding | grounding pigtails, bus connection posts | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly.
-mostly done 4/29 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
-
 
 # repair log and notes
 
@@ -455,6 +442,49 @@ I decided to move on to cleaning up the old control system and wiring harnesses,
 I added many zip ties, screwed into the aluminum frame, to act as good long-term wire harnesses. I'm wary of small pieces of adhesive for holding things in place—eventually, small–surface area adhesives seem to all fail—and I hope these attachment points will have much more longevity. I also affixed the second marquee light attachment connector, replacing the old one.
 
 Plenty more mechanical/wiring work to do here. Next up: the new control Nano which will just run the marquee pattern.
+
+## 6/9/18 2:45–7:30 p.m.
+
+### Marquee control replacement
+
+Loaded a subset of the old capSign sketch onto an Arduino Nano so that it can run the marquee animation. (This Arduino will have only that job, and does not have any logical communication with the rest of the system because it's not needed.) Tested that and it's working properly, driving the four solid-state relays as expected, in the same pattern they used to operate.
+
+The old sign electronics weren't so pretty:
+
+<img src="/images/signElectronicsBefore.JPG"/>
+
+I did a bit of soldering on some protoboard to make the new, small marquee animator:
+
+<img src="/images/signElectronicsAfter.JPG"/>
+
+I will be sealing up that box once I've made an airtight pass-through for the cable bundle, but for now, it's tested and working properly. The software running on the Arduino is `capMarqueeV18`, commit `250e985` on the `v18dev` branch. This works well and I left it running for a while as a test without trouble.
+
+The buttons on the side of the box: if you push one of them, the marquee goes into "all-on" mode, which simply turns all the lights on constantly. This is useful, I figure, for testing the bulbs to make sure they're all working, or if you want to take a picture of the sign while the lights are all on. The other button puts the Arduino into "regular marquee" mode, which follows precisely the same pattern as the marquee did before modification.
+
+### …and a stumble backwards
+
+Resuming work on the large seven-segment display, I had far worse data corruption than I'd seen before. Simply plugging in the Arduino and turning on the lights, they started a stochastic flicker party across every not-burned-out segment. 'Surely this is just running some wonky test sketch, sending bad data' I told myself, and uploaded the latest version again. Nope, that was what was actually happening. Still an electronic issue, I'm convinced: when I attach the oscilloscope's negative probe to the logic probe, suddenly the circuit calms a great deal and the flickering reduces significantly. Note that the logic ground is floating, not connected at all with the chassis, so that shouldn't be the source of the problem.
+
+I wondered, does the Arduino's 12V DC supply have a very different voltage than the big LEDs' 36V DC supply? Yes, when floating, it definitely does. In fact, using the scope I saw a huge swing at 60Hz between the two of them: something like 60V peak to peak.
+
+I heard from Steve Lambert that the Australian iteration of the project uses the [Sparkfun Large Digit Driver](https://www.sparkfun.com/products/13279), which is really just a carrier for the TI [TPIC6C596](http://www.ti.com/lit/ds/slis093d/slis093d.pdf). These are available in a DIP package, mercifully. I'm going to order some with fast delivery and see if I can substitute these, along with some bias resistors, to replace the Evil Mad Scientist Big Digit Drivers. They are tolerant of up to 33V, and have 8 current sink outputs at up to 100mA each, so they're within specs for the application. I just don't think it's worth spending more time continuing to try to find the electrical problem in the BDDs if there are viable alternatives available, and it's really worth doing the experiment at this point.
+
+(Fortunately, the seven-segment supply has a fine-tuning pot on it and is able to be turned down to below 33V, so I can be assured that the TPIC6C596 will never see a voltage outside of its rating, without needing a bias resistor for the VLED.)
+
+# master list of issues:
+
+(this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here)
+
+status | description | materials | comments
+--- | --- | --- | ---
+fixed 4/13 (hopefully—5/1 upon installation, some may have burned out. TBD.) | some individual segments in the large 7-segment displays don't work | replacement segments are included in the project's traveling package | the reason I was brought on in the first place was to repair this known problem. It *may* be related to some sort of grounding fault, since apparently separating the two halves of the sign may solve it. I haven't gotten far enough along to meaningfull diagnose
+complete 4/26 | electronic connector trouble | ordered a new 12-circuit waterproof connector to replace current connectors | Old connectors may well have been working fine, but this replacement will allow me to add in a significant length of extra wire so that the sign segments can be spread apart from each other during repair.
+obviated 4/13 | communication trouble | new female–female ethernet connector (on order) | it appears that the podium is not successfully sending data to the sign. May be a connector issue, as per testing on 4/6/18.
+5/1 one half of the sign has a new connector; the other half will be replaced with the same type as well | power to "CAPITALISM" marquee is dangerous | new 6-conductor connectors | There are four solid-state relays that drive the lights in the marquee part of the sign. When I opened the cabinet, these stranded-copper wires were just dangling in the air, uninsulated…I poked around with a multimeter and found that they were putting out 120VAC at different intervals. Not so good! These need to go into a proper high-ish current connector instead of floating. As of 4/26 I have the connectors and will acquire wire nuts to attach the sign-side plug.
+deemed unnecessary to work on 4/13 | wireless communication? | -- | it appears that there are two indpendent connections, one wired via ethernet cable and one wireless. The wireless side isn't functioning. This may not matter, since they may simply be redundant, but I'm not clear on that yet.
+fixed 4/26 | number errors | -- | the eeprom values are initializing at the maximum `unsigned long` value instead of 0, with my nearly-unmodified upload of the same firmware the thing was running before I touched it. I don't know what difference my software is making that affects this.
+complete 4/29 | chassis grounding | grounding pigtails, bus connection posts | potentially related to the first problem listed (7-segment display trouble): neither of the metal chassis of either bottom half of the signs are electrically attached to their own local ground, and there may be a ground loop or other problem when they're mechanically attached. I am affixing grounding points into both chassis which will connect to the electronic ground on both sides so that all grounds are tied together correctly.
+mostly done 4/29 | mounting wires and electronics | zip ties, self-tapping screws | many wires are floating around inside the signs and should be better anchored mechanically.
 
 # replacement parts purchase accounting
 
