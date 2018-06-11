@@ -471,6 +471,10 @@ I heard from Steve Lambert that the Australian iteration of the project uses the
 
 (Fortunately, the seven-segment supply has a fine-tuning pot on it and is able to be turned down to below 33V, so I can be assured that the TPIC6C596 will never see a voltage outside of its rating, without needing a bias resistor for the VLED.)
 
+# 6/11/18 10:45–11:15 a.m.
+
+Finalized and placed Digi-Key order to attempt to use new drivers (TPIC6C596N), in the likely event that I decide I cannot reliably solve the problem with the old ones.
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here)
@@ -526,4 +530,9 @@ to add: 5/26 Amazon order, total $55.13
 5/29 | Amazon | clear-face electronic junction box | 1 | for marquee-driving Arduino | $8.99
 5/29 | Amazon | Arduino Nano | 5 | podium, TRUE side, FALSE side, and marquee (plus an extra) | $20.99
 5/29 | Amazon | tax ||| $1.80
-**sum** | ||| as of 5/29 | **$392.40**
+6/11 | Digi-Key | TPIC6C596N IC | 7 | new LED driver for big digits | $10.36
+6/11 | Digi-Key | part 1175-1477-ND 16-DIP socket | 7 | mount ICs to protoboard | $1.68
+6/11 | Digi-Key | SBB830-ND full-size protoboard | 2 | for new electronics mounting on TRUE and FALSE sides | $12.98
+6/11 | Digi-Key | HS179-ND clip-on heatsink | 7 | to heatsink ICs | $5.18
+6/11 | Digi-Key | shipping ||| not yet known
+**sum** | ||| as of 6/11, without Digi-Key shipping | **$422.60**
