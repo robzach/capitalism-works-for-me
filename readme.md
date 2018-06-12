@@ -471,9 +471,45 @@ I heard from Steve Lambert that the Australian iteration of the project uses the
 
 (Fortunately, the seven-segment supply has a fine-tuning pot on it and is able to be turned down to below 33V, so I can be assured that the TPIC6C596 will never see a voltage outside of its rating, without needing a bias resistor for the VLED.)
 
-# 6/11/18 10:45–11:15 a.m.
+## 6/11/18 
+
+### 10:45–11:15 a.m.
 
 Finalized and placed Digi-Key order to attempt to use new drivers (TPIC6C596N), in the likely event that I decide I cannot reliably solve the problem with the old ones.
+
+### 6:45 p.m.–1 a.m.
+
+A final diagnostic attempt before giving up on my ability to reliably control, with only very occasional flickering of any sort, the big digits.
+
+Following Garth's advice, I desoldered a Zener diode on the Big Digit Driver board so that I could use substitute my own clean power supply from a regulated source, instead of using the VLED source but stepped down: the theory being that ongoing noisy voltages between VLED's ground and the Arduino's ground (which were tied together) was creating signalling trouble on the SPI lines.
+
+With my own 16V regulated power flowing to the BDD's digital supply, I observed no flickering at all in the digits. The communication problem, therefore, may be solved by driving the BDD's digital supply with the Arduino's VIN power, coming from the Arduino's own 12V DC regulator. I will attempt that next. But one possible bit of trouble before I do so: this first modification only affects the first digit of the series of three—the following two digits down the chain are still getting their logic power from the VLED supply, stepped down. Regardless, I haven't seen flicker, so it may be that only the first in the sequence needs to be fixed.
+
+---
+
+I installed 5.5mm input jacks on the three large electronics enclosures I'm adding (podium and two digit drivers). This is part of the electrical/mechanical preparation for completing the new installation work.
+
+---
+
+Running the Arduino DC regulator's power straight to the BDD's power input at the pre-regulation stage does not seem to have solved the problem, unfortunately. It's still somewhat noisy; adding a 100µF 50V capacitor I had laying around across the 12V DC input quiets the noise significantly and appears to reduce the seven-segment flicker, but it's still far more than is acceptable.
+
+In a 60 second sample, where the Arduino is sending an SPI update at 1Hz, I count 38 flickers (most of which are at 1s intervals, as the updates are pushed). Adding the filter capacitor as the Arduino's 12V DC power enters its enclosure, I did another 60s test and counted 6 flickers. This seems confirmatory of the dirtiness of the BDD's logic supply being the crux of the problem.
+
+---
+
+I wired the FALSE side's Arduino controller to the BDD unit, and also am feeding 12V from the Arduino DC converter straight into its logic circuit, right in front of its voltage regulator, just as I did with the TRUE side.
+
+Upon powering up FALSE, it is obvious that it has many burned out segments (out of the 7&times;3 which could be illuminated, at least 5 are not on), however it is not blinking/flickering at all, quite unlike the TRUE side, which (despite leaving the smoothing caps in place) has now resumed blinking nearly once per second.
+
+It's worth noting that this condition is while the two chassis of the halves of the sign are electrically isolated. I will see if I notice any change upon connecting them with a wire.
+
+Inconsistent results. At first, on the scope I observed a fairly large-amplitude noisy sawtooth signal between the two chassis: a p–p swing of ~5V. Then, I rearranged my test wires slightly and subsequent to that haven't seen a signal more than ~1.5V p–p.
+
+I added two lines to `capDigitDriverV18` so that the sign halves would display `888` for 5 seconds upon startup. This appears in commit `b62f126` on the `v18dev` branch. I uploaded this to the TRUE side, taking care not to touch my laptop chassis to the metal of the sign while plugged in via USB, because then I'd be grounding the logic to the chassis. Upload done, I unplugged, and the TRUE side began by writing `888` as desired for 5 seconds, followed by stochastically lighting every segment, a total flicker which now persists across restarts. Meanwhile, the same new firmware upload to the FALSE side produces no unexpected flickering. Further evidence of subtle, difficult-to-reproduce ground trouble. Frustrating. Packing it in for the night.
+
+Noise observed between the chassis halves; note the dominant bumps at a period of ~16µs, a corresponding frequency of 62.5kHz. I don't know what's causing it.
+
+<img src="/images/62kHz_signal_between_chassis_halves.jpg">
 
 # master list of issues:
 
