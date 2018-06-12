@@ -53,6 +53,10 @@ void setup() {
   shiftOut(MOSIpin, SCKpin, MSBFIRST, 0x00);
   digitalWrite(MISOpin, HIGH);
   digitalWrite(MISOpin, LOW);
+
+  // display 888 for 5 seconds at startup as a diagnostic
+  ledDisplay(888);
+  delay(5000);
 }
 
 void loop() {
