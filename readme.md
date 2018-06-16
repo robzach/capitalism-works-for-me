@@ -1,4 +1,4 @@
-My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://visitsteve.com/made/capitalism-works-for-me-truefalse/) piece for inclusion in the [Marx@200 show](http://www.spacepittsburgh.org/portfolio-view/marx200/) organized by CMU Profs. Kathy Newman and Susanne Slavick. Repair work carried out in April 2018 and installation completed on May 1st.
+My work log for repairing Steve Lambert's [*Capitalism Works for Me*](https://visitsteve.com/made/capitalism-works-for-me-truefalse/) piece for inclusion in the [Marx@200 show](http://www.spacepittsburgh.org/portfolio-view/marx200/) organized by CMU Profs. Kathy Newman and Susanne Slavick. Short-term patching repair work carried out in April 2018, installation mounted May 1–16, and follow-up long-term repair completed in June.
 
 
 # repair log and notes
@@ -538,7 +538,7 @@ E | 29 | 20 | dim
 " | 31 | 50 | bright
 " | 32 | 70 | brighter
 
-* The ammeter I'm using seems for some reason to be fairly high-impedance in mA measurement mode, so I have to use the 10A mode; I have a resolution of 0.01A in this mode, hence the round numbers.
+*The ammeter I'm using seems for some reason to be fairly high-impedance in mA measurement mode, so I have to use the 10A mode; I have a resolution of 0.01A in this mode, hence the round numbers.
 
 The manufacturer recommends current-limiting the LED dice at 5–20mA each, and they are in 4-parallel strings, so each segment should be run at 20–80mA; the 50mA that these segments all appear to settle at when being driven at 31V is comfortably within the range and gives plenty of brightness. It also gives the TPIC6C596N two volts of headroom below its absolute maximum V_DS of 33V. Based on this data, which is confirmatory of my hunch, I think running the V_LED at 31V is a reasonable compromise. I retested each segment's brightness at 31V and they all look good.
 
@@ -556,9 +556,62 @@ Image: segment running, with dual power supply in the background. The left suppl
 
 <img src="/images/TPIC6C596_driver_test.jpg">
 
+## 6/16/18 
+
+### 11:30 a.m.–1 p.m.
+
+I have to investigate that current creep problem. It may have been some sort of burn-in in the LEDs or driver chip, or perhaps it had to do with the temperature of a component rising over time. As I'm working I'm going to record current over time as reported by the power supply's ammeter; I'll record changes as I notice them. This is still running at 31V, voltage regulated.
+
+time | elapsed (m) | current (mA)
+---|---|---
+11:44 | 0 | 320
+11:45 | 1 | 330
+11:45 | 1 | 340
+11:47 | 3 | 350
+11:49 | 5 | 360
+11:52 | 8 | 370
+12:00 | 16 | 380
+12:05 | 21 | 390
+12:18 | 34 | 400
+12:44 | 60 | 400
+13:00 | 74 | 400
+14:06 | 142 | 400
+15:00 | 196 | 400
+
+I wired up a second TPIC6C596N while observing these values, taking time to cut leads and resistor legs to good lengths since I will reuse them all when transferring the breadboard wiring to the protoboards.
+
+### 2:15–4 p.m.
+
+Resistor value calculations, which I did earlier but didn't write up:
+
+V=iR
+
+V = V_LED - V_F
+
+for V_LED of 31V, i of 0.04A, and V_F 30V
+
+(V_LED - V_F) ÷ i = R
+1V ÷ 0.04A = 25Ω
+
+P = iV = 0.04A * 1V = 0.04W power dissipation, so a 1/4W resistor is certainly fine.
+
+I'm using **33Ω** resistors in series with each LED segment to err on the side of a bit more current regulation.
+
+---
+
+Viewed from the top, the pads on each full digit numeral, from left to right, are
+
+A F G E (V_LED) D C B (decimal point)
+
+The rightmost pad is the decimal point which need not be soldered in this project. The common positive (anode) V_LED pad is substantially thicker than the others, which makes sense as it carries seven times the current.
+
+___
+
+Still having significant trouble communicating with the chip. I'm getting segments lighting up, but I can't reliably relate the pattern of digits to the bits I'm writing out with my serial commands. Not worth writing up the details but lots of trials and so far, lots of errors.
+
 # master list of issues:
 
-(this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here)
+(this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
 
 status | description | materials | comments
 --- | --- | --- | ---
