@@ -511,6 +511,51 @@ Noise observed between the chassis halves; note the dominant bumps at a period o
 
 <img src="/images/62kHz_signal_between_chassis_halves.jpg">
 
+## 6/15/18 6:15–9:30 p.m.
+
+Using a spare Big Digit unit to test for its behavior when being driven right around its V_F. The circuit is very simple: a voltage-regulated source providing 29–32V, in series with a 33Ω resistor to act as a current limiter, in series with a single LED segment of the digit.
+
+I'm on the steep part of the V–I curve, but if I am careful not to apply too much voltage, the current should stay within appropriate bounds. 
+
+Observations of different segments, where I is a function of the V supplied in the above described test circuit:
+
+LED segment | V (V) | I (mA)* | light output (subjective)
+---|---|---|---
+A | 29 | 20 | dim
+" | 30 | 30 | medium
+" | 31 | 50 | bright
+" | 32 | 70 | brighter
+F | 29 | 20 | dim
+" | 30 | 30 | medium
+" | 31 | 50 | bright
+" | 32 | 70 | brighter
+G | 29 | 20 | dim
+" | 30 | 30 | dim
+" | 31 | 50 | medium
+" | 32 | 70 | bright
+E | 29 | 20 | dim 
+" | 30 | 30 | medium
+" | 31 | 50 | bright
+" | 32 | 70 | brighter
+
+* The ammeter I'm using seems for some reason to be fairly high-impedance in mA measurement mode, so I have to use the 10A mode; I have a resolution of 0.01A in this mode, hence the round numbers.
+
+The manufacturer recommends current-limiting the LED dice at 5–20mA each, and they are in 4-parallel strings, so each segment should be run at 20–80mA; the 50mA that these segments all appear to settle at when being driven at 31V is comfortably within the range and gives plenty of brightness. It also gives the TPIC6C596N two volts of headroom below its absolute maximum V_DS of 33V. Based on this data, which is confirmatory of my hunch, I think running the V_LED at 31V is a reasonable compromise. I retested each segment's brightness at 31V and they all look good.
+
+Next, I will breadboard my TPIC6C596N circuit to test and debug driving a single digits' segments. If it works, I'll test two segments in a chain (to address the problem of data transmission between the ICs), and if that works, I'll deinstall the current BDD hardware to install my TPIC6C596N replacement on one half of the sign.
+
+---
+
+I've breadboarded and gotten the TPIC6C596N to drive all 7 segments of a single digit, at a steady brightness. As I've hit some software trouble in controlling the digit (a simple problem involving how I'm shifting data out, as far as I can tell), I've noticed a worrying trend going on in the background. The ammeter on my power supply has been very slowly creeping up as the digit has been sitting on 8 for about 30 or 45 minutes by now. It began at ~370mA (which is ~53mA per segment, no problem), but now has crept up to ~400mA, or ~57mA per segment). If this trend continues, it'll be worrisome because my ballast resistors rely on a fairly steady V_F.
+
+A good sign is that the TPIC6C596N, now sinking ~400mA for close to an hour, remains cool to the touch.
+
+Tomorrow, I will resume this work, including paying close attention to the current draw of a segment that I leave wired on for consecutive hours.
+
+Image: segment running, with dual power supply in the background. The left supply is running the LED and the right supply is the Arduino's and IC's logic supply, before running through a 7805 regulator.
+
+<img src="/images/TPIC6C596_driver_test.jpg">
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here)
