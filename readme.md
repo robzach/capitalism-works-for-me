@@ -621,6 +621,16 @@ Next: driving two of the digits chained together. Works! Test sketch, `multi-dig
 
 I soldered legs onto four digits so that they can be wired into the new driver circuits. I also applied some silicone to help secure the wires. Lots of soldering tomorrow! More LEDs as well as both assembled driver boards.
 
+## 6/17/18
+
+### 10:45 a.m.–12:30 p.m.
+
+Soldering wire leads onto another two LED modules so that I have six total.
+
+I completed soldering and testing of five units, which required swapping out two good segments with two bad ones I came across.
+
+The sixth unit is working, but every single segment is oddly dim, and drawing only about 10mA when powered with 31V, even without using a ballast resistor. Perhaps this unit has a higher V_F, was from a different manufacturing run, or is somehow otherwise different? To be investigated after lunch.
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
