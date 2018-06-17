@@ -609,6 +609,18 @@ ___
 
 Still having significant trouble communicating with the chip. I'm getting segments lighting up, but I can't reliably relate the pattern of digits to the bits I'm writing out with my serial commands. Not worth writing up the details but lots of trials and so far, lots of errors.
 
+### 4:45–8 p.m.
+
+Trying to use the built-in hardware SPI library for data transmission to see if that helps with the communication trouble.
+
+---
+
+After many hours of troubleshooting, I finally discovered that the fault with the Sparkfun sample code was that the bitmask address for each of the 7-segment segments was off by 1. This corrupted the data and made garbled numbers display. Fixing that problem, I am now able to drive a 7-segment digit without trouble using the TPIC6C596N hardware. The test code, `7-seg-with-tpic6c594-countup`, appears in commit `f470367` on the `v18dev` branch.
+
+Next: driving two of the digits chained together. Works! Test sketch, `multi-digit-7-seg-with-tpic6c594-countup`, appears in commit `4151167` on the `v18dev` branch.
+
+I soldered legs onto four digits so that they can be wired into the new driver circuits. I also applied some silicone to help secure the wires. Lots of soldering tomorrow! More LEDs as well as both assembled driver boards.
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
