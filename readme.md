@@ -631,6 +631,57 @@ I completed soldering and testing of five units, which required swapping out two
 
 The sixth unit is working, but every single segment is oddly dim, and drawing only about 10mA when powered with 31V, even without using a ballast resistor. Perhaps this unit has a higher V_F, was from a different manufacturing run, or is somehow otherwise different? To be investigated after lunch.
 
+### 2:30–4:30 p.m.
+
+Completed the installation of the TRUE side seven-segment digits with wiring, but not yet with electronics added. Installing and testing the wiring is the next step.
+
+### 5 p.m.–3 a.m.
+
+Soldering up the protoboard for the TRUE side took a while, but once that was complete, and the wiring double-checked, I successfully lit the number 8, using a bench supply to provide V_LED. Running the power off of the project's built-in supply, tuned down to 31V, also worked as expected, without any blinking or other trouble, which is a relief. This test completed at 7:50.
+
+Continued soldering remaining digit leads, second control board, and working on installation on FALSE side.
+
+7-segment wiring color key:
+
+segment(*) | wire color
+---|---
+A | purple
+B | blue 
+C | brown
+D | yellow
+E | orange
+F | green
+G | white
+common anode | red
+
+(*) segment designations as follows (ASCII art copied from a Sparkfun sketch):
+
+<pre>
+    -  A
+  / / F/B
+  -  G
+/ / E/C
+-. D/DP
+</pre>
+
+---
+
+As of 2:30 a.m., both sides of the sign are currently running test patterns (just cycling through the digits in sequence, running `7-seg-with-tpic6c594-countup`) driven by their local Arduinos and new driver hardware. All of the segments are working. I will leave this test running overnight and check on it in the morning to make sure the system has some longevity.
+
+I have not yet modified the podium–digit driver sketch to use the slightly-different SPI configuration that the new drivers require, but that should be a very easy change. Once that's done, I can wire all the parts together and test communication, etc.
+
+For reference, here is the new driver protoboard without LED wires soldered in:
+
+<img src="/images/new_driver_protoboard.JPG">
+
+And here is the board with the wires soldered on (this is the FALSE side driver board):
+
+<img src="/images/new_driver_prototoboard_plus_LED_wiring.JPG">
+
+Now that I know these are working, I'll need to draw up a schematic of the circuit for reference.
+
+Tidied up a bit and calling it a night.
+  
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
