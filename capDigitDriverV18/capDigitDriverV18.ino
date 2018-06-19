@@ -3,6 +3,14 @@
 
    see <https://github.com/robzach/capitalism-works-for-me> for further information, including schematic
 
+   incorporates code from Nathan Seidle's "Controlling large 7-segment displays" sketch
+
+    wiring:
+    TPIC6C594 pin | Arduino pin
+           SER IN | 11
+           SRCK   | 12
+           RCK    | 13
+   
    sketch by Robert Zacharias, rz@rzach.me, 2018
 */
 
@@ -16,10 +24,9 @@ const int SIDEPIN = A5;
 bool trueside; // this bool will be set in the setup() by physical wiring
 
 // SPI pins
-const int SCKpin = 13;
-const int MISOpin = 12;
-const int MOSIpin = 11;
-const int GND = A2; // using pin A2 as a logic ground since otherwise none is broken out
+const int segmentClock = 13;  // SCK pin on Arduino Nano
+const int segmentLatch = 12; // MISO pin on Arduino Nano
+const int segmentData = 11; // MOSI pin on Arduino Nano
 
 const int RS485RECEIVEENABLEPIN = 7; // RS485 transceiver: pull this pin low to receive
 
@@ -43,16 +50,13 @@ void setup() {
   digitalWrite(RS485RECEIVEENABLEPIN, LOW);
 
   // SPI communication
-  pinMode(SCKpin, OUTPUT);
-  pinMode(MISOpin, OUTPUT);
-  pinMode(MOSIpin, OUTPUT);
-  pinMode(GND, OUTPUT);
-  digitalWrite(GND, LOW);
+  pinMode(segmentClock, OUTPUT);
+  pinMode(segmentLatch, OUTPUT);
+  pinMode(segmentData, OUTPUT);
 
-  //Blank out the register
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, 0x00);
-  digitalWrite(MISOpin, HIGH);
-  digitalWrite(MISOpin, LOW);
+  digitalWrite(segmentClock, LOW);
+  digitalWrite(segmentData, LOW);
+  digitalWrite(segmentLatch, HIGH);
 
   // display 888 for 5 seconds at startup as a diagnostic
   ledDisplay(888);
@@ -67,20 +71,18 @@ void loop() {
   if (altSerial.available() > 0) {
     if (trueside && altSerial.peek() == 't') {
       inVal = altSerial.parseInt();
+      ledDisplay(inVal);
       Serial.print("true value received: ");
       Serial.println(inVal);
     }
     else if (!trueside && altSerial.peek() == 'f') {
       inVal = altSerial.parseInt();
+      ledDisplay(inVal);
       Serial.print("false value received: ");
       Serial.println(inVal);
     }
     else altSerial.read(); // discard any data that arrived mangled
   }
-
-  // print the value on the local 7-segment display
-  //  if (millis() - timer > WAIT) ledDisplay(inVal);
-  ledDisplay(inVal);
 }
 
 void ledDisplay(int num) {
@@ -88,43 +90,48 @@ void ledDisplay(int num) {
   int tens = (num % 100) / 10;
   int hundreds = (num % 1000) / 100;
 
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(hundreds));
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(tens));
-  shiftOut(MOSIpin, SCKpin, MSBFIRST, segLookup(ones));
-
-  digitalWrite(MISOpin, HIGH);
-  delay(5);
-  digitalWrite(MISOpin, LOW);
-
-  timer = millis();
+  postNumber(segLookup(hundreds));
+  postNumber(segLookup(tens));
+  postNumber(segLookup(ones));
 }
 
-void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
+void postNumber(byte segs)
 {
-  uint8_t i;
 
-  for (i = 0; i < 8; i++)  {
-    if (bitOrder == LSBFIRST)
-      digitalWrite(dataPin, !!(val & (1 << i)));
-    else  
-      digitalWrite(dataPin, !!(val & (1 << (7 - i))));
-    delay(1);
-    digitalWrite(clockPin, HIGH);
-    delay(1);
-    digitalWrite(clockPin, LOW);    
+  //  Clock these bits out to the drivers
+  for (byte x = 0 ; x < 8 ; x++)
+  {
+    digitalWrite(segmentClock, LOW);
+    digitalWrite(segmentLatch, LOW);
+    digitalWrite(segmentData, segs & 1 << (7 - x));
+    digitalWrite(segmentClock, HIGH); //Data transfers to the register on the rising edge of SRCK
+    digitalWrite(segmentLatch, HIGH);
   }
 }
 
 byte segLookup(int digitIn) {
-  // turn a numeral into a seven-segment pattern
-  if (digitIn == 0) return 0x3f;
-  if (digitIn == 1) return 0x06;
-  if (digitIn == 2) return 0x5b;
-  if (digitIn == 3) return 0x4f;
-  if (digitIn == 4) return 0x66;
-  if (digitIn == 5) return 0x6d;
-  if (digitIn == 6) return 0x7d;
-  if (digitIn == 7) return 0x07;
-  if (digitIn == 8) return 0x7f;
-  if (digitIn == 9) return 0x6f;
+
+#define a  1<<1
+#define b  1<<7
+#define c  1<<6
+#define d  1<<5
+#define e  1<<4
+#define f  1<<2
+#define g  1<<3
+#define dp 1<<8
+
+  byte segments;
+
+  if (digitIn == 1) segments = b | c;
+  if (digitIn == 2) segments = a | b | d | e | g;
+  if (digitIn == 3) segments = a | b | c | d | g;
+  if (digitIn == 4) segments = f | g | b | c;
+  if (digitIn == 5) segments = a | f | g | c | d;
+  if (digitIn == 6) segments = a | f | g | e | c | d;
+  if (digitIn == 7) segments = a | b | c;
+  if (digitIn == 8) segments = a | b | c | d | e | f | g;
+  if (digitIn == 9) segments = a | b | c | d | f | g;
+  if (digitIn == 0) segments = a | b | c | d | e | f;
+
+  return segments;
 }
