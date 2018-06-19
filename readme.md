@@ -681,6 +681,20 @@ And here is the board with the wires soldered on (this is the FALSE side driver 
 Now that I know these are working, I'll need to draw up a schematic of the circuit for reference.
 
 Tidied up a bit and calling it a night.
+
+## 6-18-18 10:30 p.m.–4 a.m.
+
+Every time I've checked on the LEDs, earlier this morning as well as less than an hour ago, they were still running the test pattern correctly, with no burned out digits. Good sign!
+
+I installed the digit driver hardware into sealable boxes. I used nylon 4-40 hardware in each box to hold its contents in place: the circuit board containing the new driver hardware, the Arduino Nano mounted on its capDriver board, and a power strip.
+
+<img src="/images/falseSideDriverEnclosure.JPG">
+
+I modified `capDigitDriverV18` so that it would send appropriately formed signals to the new chip, and so far both the TRUE and FALSE sides are successfully receiving their own data streams and displaying digits based on the votes recorded by button pushes.
+
+I worked on building out the enclosure for the podium; unfortunately, though the podium timer was working fine before, it's become wonky and displays bizarro numbers. I'll investigate this tomorrow. I'll also add a few buttons to that enclosure so that the user can reset the counts to zero and 888. I'll also build out the electrical connectors to bridge LED power from the TRUE side to FALSE.
+
+Tonight I'm leaving both sides on 888 just to confirm again that nothing burns out after a bunch of hours of running. Finally, before clocking out, I put the little heatsinks on each of the LED driver chips. Even after continuously displaying an 8 for like an hour, they felt only ~110ºF to me. Still, for longevity it seems heatsinking isn't going to hurt.
   
 # master list of issues:
 
