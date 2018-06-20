@@ -695,7 +695,61 @@ I modified `capDigitDriverV18` so that it would send appropriately formed signal
 I worked on building out the enclosure for the podium; unfortunately, though the podium timer was working fine before, it's become wonky and displays bizarro numbers. I'll investigate this tomorrow. I'll also add a few buttons to that enclosure so that the user can reset the counts to zero and 888. I'll also build out the electrical connectors to bridge LED power from the TRUE side to FALSE.
 
 Tonight I'm leaving both sides on 888 just to confirm again that nothing burns out after a bunch of hours of running. Finally, before clocking out, I put the little heatsinks on each of the LED driver chips. Even after continuously displaying an 8 for like an hour, they felt only ~110ºF to me. Still, for longevity it seems heatsinking isn't going to hurt.
-  
+
+## 6-19-18 9:15 p.m.–5 a.m.
+
+Both 888's were still running when I arrived, thankfully. I felt each of the tpic6c594 drivers on both TRUE and FALSE side. I noticed that the ones and tens chips on the TRUE side are still warm to the touch, perhaps 130ºF. The other four chips (the TRUE hundreds and all of the FALSE chips) were maybe a few degrees above ambient, if that.
+
+The first order of business is to debug the countdown display on the podium. It started acting up a few weeks ago and it updates every second with weird garbage data, in between working normally.
+
+Appears that I'm having some trouble with the SPI communication on the podium to its 7-segment display. I'm going to try to send data to the device using its TTL connection instead of SPI.
+
+Before disconnecting the SPI, here is the wiring map:
+
+7-seg display pin | Arduino pin
+---|---
+SI | MOSI
+SCK | SCLK
+SO | MISO
+
+I've tried running test sketches via SPI as well as TTL serial communication, and the display isn't responding at all now. It was iffy and unstable before, and appears now to be dead. I'll need to procure a replacement.
+
+___
+
+I spent a while completing and mounting the enclosures for both of the digit drivers. They are reasonably well sealed against water, and also have dessicants inside for ongoing protection.
+
+The TRUE enclosure (FALSE is almost the same, though wires come out of different sides):
+
+<img src="/images/TRUE_digit_driver_enclosure.JPG">
+ 
+---
+
+Wrote clear labels in marker on the aluminum of the TRUE side main panel area, to mark out functional groups of things and make future troubleshooting easier. Here's an overall view:
+
+<img src="/images/main_sign_panel_overview.JPG">
+
+Some details:
+
+**Marquee control** A button is added that will make all the marquee lights remain steady on. (This is not the default behavior.) A second button returns the function back to regular marquee mode, though so does power cycling.
+
+<img src="/images/marquee_control_detail.JPG">
+
+**Data bus** The "data bus" is really just an elementary three-way ethernet jack. The suggested routing is drawn, but the order doesn't matter at all since all three connections are simply electrically common. The podium is always and only transmitting, and the two digit drivers are always and only receiving, so no line negotiation is needed.
+
+<img src="/images/data_bus_detail.JPG">
+
+**FALSE side power leads** The power for the FALSE side white LEDs illuminating the word *FALSE* (a 12V supply) as well as for the FALSE side digits (a 31V supply) is packaged into a four-conductor lead. The FALSE side has its mate, which is on an approximately 10' extension so that the sign can be debugged while disassembled.
+
+<img src="/images/FALSE_power_leads.JPG">
+
+---
+
+`capPodiumV18` has a few changes. Primarily, it only retransmits data every 15 seconds (it always immediately transmits data when a vote is detected). The rate was slowed because there is a noticeable LED flicker at update, so now there's far less updating. Also, it displays 888 on both sides for 5 seconds at startup, and then updates with the last recorded vote.
+
+---
+
+Tomorrow: I hope to find a four-digit LED display so that I can fully wrap all these repairs!
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
