@@ -750,6 +750,12 @@ Some details:
 
 Tomorrow: I hope to find a four-digit LED display so that I can fully wrap all these repairs!
 
+## 6-20-18 3:15–5:30 p.m.
+
+I borrowed an Adafruit I2C seven-segment digit display from IDeATe to complete the project. I adapted capPodiumV18 to drive it and it works well and has nice bright red segments. I had to do a bit of hacking to get the old countdown timer deinstalled (it was in there pretty good), and at the moment I'm waiting for the silicone I'm using as glue to dry so that the segments will be secure against the inner face of the mount.
+
+Aside from some installing a few adhesive wire holders and writing a few more labels, it looks like this is done!
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
