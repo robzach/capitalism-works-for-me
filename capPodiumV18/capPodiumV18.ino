@@ -16,8 +16,6 @@ AltSoftSerial altSerial;
 
 const bool VERBOSESERIALFEEDBACK = true; // switch true or false as wanted
 
-const int VCCPIN = A2; // using A2 as 7-seg display's VCC
-const int GNDPIN = A3; // using A3 as 7-seg display's GND
 const int TRUEBUTTONPIN = 2; // wired to high side of true button
 const int FALSEBUTTONPIN = 3; // wired to high side of true button
 const int THREEEIGHTS = 4; // pushbutton to display 888 as votes for LED diagnosis
@@ -26,7 +24,9 @@ const int ZEROOUT = 5; // pushbutton to reset all votes to 0
 const int SECONDSTIMER = 15; // wait between votes, in seconds
 
 const unsigned long WAIT = 1000; // wait between clock ticks on the countdown, in milliseconds
-unsigned long timer;
+
+
+const unsigned long RETRANSMISSIONWAIT = 15000; // wait between retransmissions in absence of new votes, in milliseconds
 
 bool readyForNextVote;
 
@@ -36,11 +36,6 @@ unsigned int trueVote = EEPROM.get(EEPROMTRUEADDRESS, trueVote); // retrieve las
 unsigned int falseVote = EEPROM.get(EEPROMFALSEADDRESS, falseVote); // retrieve last falseVote stored
 
 void setup() {
-  pinMode(VCCPIN, OUTPUT);
-  digitalWrite(VCCPIN, HIGH);
-  pinMode(GNDPIN, OUTPUT);
-  digitalWrite(GNDPIN, LOW);
-
   pinMode(TRUEBUTTONPIN, INPUT_PULLUP);
   pinMode(FALSEBUTTONPIN, INPUT_PULLUP);
   pinMode(THREEEIGHTS, INPUT_PULLUP);
@@ -58,11 +53,21 @@ void setup() {
   digitalWrite(7, HIGH);
 
   SPI.begin();
+
+  // transmit 888 to both sides for five seconds at startup
+  altSerial.print("t888\nf888");
+  delay(5000);
+
+  // send vote at startup
+  transmitVote();
 }
 
 void loop() {
 
   static int seconds = SECONDSTIMER;
+  static unsigned long timer;
+  static unsigned long retransmissiontimer;
+
 
   // once per second
   if (millis() - timer >= WAIT) {
@@ -85,8 +90,10 @@ void loop() {
       SPI.transfer(seconds / 10); // tens digit
       SPI.transfer(seconds % 10); // ones digit
 
-      if (VERBOSESERIALFEEDBACK){
-        Serial.println("seconds = " + String(seconds) + "; tens = " + String(seconds/10) + "; ones = " + String(seconds%10));
+      SPI.endTransaction();
+
+      if (VERBOSESERIALFEEDBACK) {
+        Serial.println("seconds = " + String(seconds) + "; tens = " + String(seconds / 10) + "; ones = " + String(seconds % 10));
       }
 
       if (seconds != 0) {
@@ -94,10 +101,13 @@ void loop() {
         readyForNextVote = false;
       }
       else readyForNextVote = true;
-
-      SPI.endTransaction();
     }
-    transmitVote(); // runs once per second in case there's garbled data
+  }
+
+  // resend votes occasionally in case prior transmission was garbled
+  if (millis() - retransmissiontimer >= RETRANSMISSIONWAIT) {
+    transmitVote();
+    retransmissiontimer = millis();
   }
 
   if (readyForNextVote) {
@@ -119,15 +129,23 @@ void loop() {
     }
   }
 
+  // set displays to 888 for segment testing. Note this does *not* affect the EEPROM memory vote count.
+  // Therefore, to test digits without losing current vote totals:
+  // 1. Push the 888 button
+  // 2. Observe digits as wanted
+  // 3. Power cycle podium
   if (!digitalRead(THREEEIGHTS)) {
     trueVote = 888;
     falseVote = 888;
+    transmitVote();
     Serial.println("THREEEIGHTS button pushed");
   }
 
+  // reset vote counts to zero, in EEPROM memory as well as on the displays
   if (!digitalRead(ZEROOUT)) {
     trueVote = 0;
     falseVote = 0;
+    transmitVote();
     EEPROM.put(EEPROMTRUEADDRESS, trueVote);
     EEPROM.put(EEPROMFALSEADDRESS, falseVote);
     Serial.println("ZEROOUT button pushed");
