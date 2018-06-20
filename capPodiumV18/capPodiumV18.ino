@@ -8,11 +8,13 @@
 
 */
 
-#include <SPI.h> // for SPI communication
 #include <AltSoftSerial.h> // for RS485 communication
 #include <EEPROM.h>
+#include "Adafruit_LEDBackpack.h"
+#include "Adafruit_GFX.h"
 
 AltSoftSerial altSerial;
+Adafruit_7segment matrix = Adafruit_7segment();
 
 const bool VERBOSESERIALFEEDBACK = true; // switch true or false as wanted
 
@@ -22,10 +24,7 @@ const int THREEEIGHTS = 4; // pushbutton to display 888 as votes for LED diagnos
 const int ZEROOUT = 5; // pushbutton to reset all votes to 0
 
 const int SECONDSTIMER = 15; // wait between votes, in seconds
-
 const unsigned long WAIT = 1000; // wait between clock ticks on the countdown, in milliseconds
-
-
 const unsigned long RETRANSMISSIONWAIT = 15000; // wait between retransmissions in absence of new votes, in milliseconds
 
 bool readyForNextVote;
@@ -52,13 +51,13 @@ void setup() {
   pinMode(7, OUTPUT); // pull pin 7 high to set RS485 as outgoing
   digitalWrite(7, HIGH);
 
-  SPI.begin();
+  matrix.begin(0x70);
 
-  // transmit 888 to both sides for five seconds at startup
+  // transmit diagnostic 888 to both sides for five seconds at startup
   altSerial.print("t888\nf888");
   delay(5000);
 
-  // send vote at startup
+  // send votes after diagnostic 888
   transmitVote();
 }
 
@@ -68,6 +67,8 @@ void loop() {
   static unsigned long timer;
   static unsigned long retransmissiontimer;
 
+  static boolean drawDots = true;
+  static boolean blinker = true;
 
   // once per second
   if (millis() - timer >= WAIT) {
@@ -75,22 +76,20 @@ void loop() {
 
     // write current countdown time to podium 7-segment display
     {
-      SPI.beginTransaction(SPISettings(250000, MSBFIRST, SPI_MODE0));
 
       if (seconds % 2 == 0) {
-        SPI.transfer(0x77); SPI.transfer(0b10000); // blink colon on during even seconds
+        drawDots = true; // blink colon on during even seconds
       }
       else {
-        SPI.transfer(0x77); SPI.transfer(0); // blink colon off during odd seconds
+        drawDots = false; // blink colon off during odd seconds
       }
 
-      // send two blanks, then the two-digit value
-      SPI.transfer(0x78); // blank
-      SPI.transfer(0x78); // blank
-      SPI.transfer(seconds / 10); // tens digit
-      SPI.transfer(seconds % 10); // ones digit
+      // will print in format "0:12", leaving first digit blank
+      matrix.writeDigitNum(1, 0);
+      matrix.drawColon(drawDots);
+      matrix.writeDigitNum(3, seconds / 10);
+      matrix.writeDigitNum(4, seconds % 10);
 
-      SPI.endTransaction();
 
       if (VERBOSESERIALFEEDBACK) {
         Serial.println("seconds = " + String(seconds) + "; tens = " + String(seconds / 10) + "; ones = " + String(seconds % 10));
@@ -100,8 +99,26 @@ void loop() {
         seconds--;
         readyForNextVote = false;
       }
-      else readyForNextVote = true;
+
+      // at time = 0, blink the zeros to show it's ready
+      else {
+        readyForNextVote = true;
+        blinker = !blinker;
+        if (blinker) { // zeros and colon on
+          matrix.writeDigitNum(1, 0);
+          matrix.drawColon(drawDots);
+          matrix.writeDigitNum(3, 0);
+          matrix.writeDigitNum(4, 0);
+        }
+        else { // only way I could see to blank out the display (all segments off)
+          matrix.writeDigitRaw(1, 0x0);
+          matrix.writeDigitRaw(2, 0x0);
+          matrix.writeDigitRaw(3, 0x0);
+          matrix.writeDigitRaw(4, 0x0);
+        }
+      }
     }
+    matrix.writeDisplay();
   }
 
   // resend votes occasionally in case prior transmission was garbled
