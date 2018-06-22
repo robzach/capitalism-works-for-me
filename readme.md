@@ -756,6 +756,14 @@ I borrowed an Adafruit I2C seven-segment digit display from IDeATe to complete t
 
 Aside from some installing a few adhesive wire holders and writing a few more labels, it looks like this is done!
 
+## 6-21-18 2–5 p.m.
+
+Completed sealing up the TRUE and FALSE sides, and with Kathy and Dan's help carried them downstairs in CFA to be crated.
+
+## 6-22-18 11:30 a.m.–4 p.m.
+
+Packed up the podium crate, which consisted of doing a partial cleanout of the small parts kit as well as the large spare parts bin. While packing the crate I found a lot of adhesive-backed tough velcro, and used some of that to mount the podium electronics box into the podium. Went to the FMS warehouse and wired a new six-pin connector to ALISM so that its marquee lights will mate with the new connector in the main control box. Returned to campus and cleaned up and cleared the workspace (CFA 304). Done with all mechanical/physical work! I'll need to complete the documentation, including schematics of new circuitry, etc.
+
 # master list of issues:
 
 (this list from April, prior to the installation of the sign; repair work after deinstallation does not appear here but is detailed in the work log above)
